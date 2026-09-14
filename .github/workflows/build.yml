@@ -25,11 +25,10 @@ jobs:
       - name: Install Dependencies & Capacitor
         run: |
           npm install
-          npx cap init --yes
+          npx cap add android
 
       - name: Build Android Project
         run: |
-          npx cap add android
           cd android && ./gradlew assembleDebug
 
       - name: Upload APK Artifact
@@ -37,4 +36,3 @@ jobs:
         with:
           name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
-
