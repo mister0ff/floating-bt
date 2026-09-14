@@ -25,10 +25,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Add and Sync Android Platform
+      - name: Clean and Recreate Android Platform
         run: |
-          npx cap add android || true
-          npx cap sync android
+          rm -rf android
+          npx cap add android
 
       - name: Build Android Project
         run: |
