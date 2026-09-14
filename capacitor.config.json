@@ -1,0 +1,8 @@
+{
+  "appId": "com.app.floating",
+  "appName": "Floating Buttons",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
