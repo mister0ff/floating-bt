@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Buttons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        h2 { color: #bb86fc; }
+        button {
+            background-color: #6200ee;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+        button:active { background-color: #3700b3; }
+    </style>
+</head>
+<body>
+    <h2>Floating Buttons Manager</h2>
+    <p>Clique abaixo para conceder permissão de sobreposição e iniciar o flutuante.</p>
+    
+    <button onclick="requestPermission()">1. Permitir Sobreposição</button>
+    <button onclick="startFloatingService()">2. Iniciar Botão Flutuante</button>
+
+    <script>
+        function requestPermission() {
+            if (window.AndroidBridge) {
+                window.AndroidBridge.requestOverlayPermission();
+            } else {
+                alert("Execute dentro do aplicativo Android nativo.");
+            }
+        }
+
+        function startFloatingService() {
+            if (window.AndroidBridge) {
+                window.AndroidBridge.startService();
+            } else {
+                alert("Execute dentro do aplicativo Android nativo.");
+            }
+        }
+    </script>
+</body>
+</html>
+
