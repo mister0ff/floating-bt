@@ -25,7 +25,7 @@ jobs:
       - name: Install Dependencies & Capacitor
         run: |
           npm install
-          npx cap add android
+          npx cap sync android
 
       - name: Build Android Project
         run: |
