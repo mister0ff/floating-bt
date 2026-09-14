@@ -1,0 +1,15 @@
+{
+  "name": "floating-buttons-app",
+  "version": "1.0.0",
+  "description": "App de botões flutuantes para Android",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'No build step required for static www'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  }
+}
+
