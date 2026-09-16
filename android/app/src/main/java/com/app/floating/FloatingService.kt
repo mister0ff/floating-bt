@@ -1,4 +1,4 @@
-package com.app.floating
+package com.chess.app
 
 import android.app.Service
 import android.content.Intent
@@ -23,11 +23,11 @@ class FloatingService : Service() {
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
         floatingButton = Button(this).apply {
-            text = "⚡"
+            text = "♟️"
             setBackgroundColor(0xFF6200EE.toInt())
             setTextColor(0xFFFFFFFF.toInt())
             setOnClickListener {
-                Toast.makeText(this@FloatingService, "Botão Flutuante Acionado!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@FloatingService, "Chess Floating Acionado!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -86,4 +86,3 @@ class FloatingService : Service() {
         }
     }
 }
-
