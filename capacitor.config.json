@@ -1,8 +1,9 @@
 {
-  "appId": "com.app.floating",
-  "appName": "Floating Buttons",
+  "appId": "com.chess.app",
+  "appName": "Chess",
   "webDir": "www",
   "server": {
     "androidScheme": "https"
   }
 }
+
