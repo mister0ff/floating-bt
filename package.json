@@ -1,14 +1,18 @@
 {
-  "name": "floating-buttons-app",
+  "name": "chess-floating-app",
   "version": "1.0.0",
-  "description": "App de botões flutuantes para Android",
+  "description": "App Chess para Android",
   "main": "index.js",
   "scripts": {
-    "build": "echo 'No build step required for static www'"
+    "build": "echo 'No build step required for static www'",
+    "icon": "npx capacitor-assets generate"
   },
   "dependencies": {
     "@capacitor/android": "^6.0.0",
     "@capacitor/cli": "^6.0.0",
     "@capacitor/core": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
   }
 }
