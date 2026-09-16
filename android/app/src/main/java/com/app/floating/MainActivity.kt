@@ -1,4 +1,4 @@
-package com.app.floating
+package com.chess.app
 
 import android.content.Intent
 import android.net.Uri
@@ -15,7 +15,7 @@ class MainActivity : BridgeActivity() {
         bridge.webView.addJavascriptInterface(WebAppInterface(this), "AndroidBridge")
     }
 
-    class androidInterface(private val activity: MainActivity) {
+    class WebAppInterface(private val activity: MainActivity) {
         @JavascriptInterface
         fun requestOverlayPermission() {
             if (!Settings.canDrawOverlays(activity)) {
@@ -36,28 +36,4 @@ class MainActivity : BridgeActivity() {
             }
         }
     }
-    
-    // Alias para compatibilidade com o HTML
-    private class WebAppInterface(val activity: MainActivity) {
-        @JavascriptInterface
-        fun requestOverlayPermission() {
-            if (!Settings.canDrawOverlays(activity)) {
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:${activity.packageName}")
-                )
-                activity.startActivity(intent)
-            }
-        }
-
-        @JavascriptInterface
-        fun startService() {
-            if (Settings.canDrawOverlays(activity)) {
-                val intent = Intent(activity, FloatingService::class.java)
-                activity.startService(intent)
-                activity.finishAffinity()
-            }
-        }
-    }
 }
-
