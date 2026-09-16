@@ -25,10 +25,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Clean and Recreate Android Platform
-        run: |
-          rm -rf android
-          npx cap add android
+      - name: Sync Capacitor Android
+        run: npx cap sync android
 
       - name: Build Android Project
         run: |
