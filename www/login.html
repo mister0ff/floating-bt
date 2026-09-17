@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xadrez Pro - Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --duo-green:#58CC02; --duo-green-dark:#46A302;
+    --duo-blue:#1CB0F6; --duo-blue-dark:#1899D6;
+    --duo-red:#FF4B4B; --duo-red-dark:#EA2B2B;
+    --ink:#FFFFFF; --ink-soft:#AFAFAF;
+    --paper:#1f2e35; --paper-card:#13222a; --bg:#0e171b; --border:#2c404c;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+    font-family:'Nunito', sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px;
+  }
+  .card{
+    width:100%; max-width:440px; background:var(--paper); padding:24px; border-radius:24px;
+    border:2px solid var(--border); box-shadow: 0 8px 0 rgba(0,0,0,0.35); position:relative; display:flex; flex-direction:column;
+  }
+  h1{ font-family:'Baloo 2', sans-serif; margin:0 0 6px; color:var(--ink); font-size:28px; }
+  .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:6px; }
+  .logo{ font-size:36px; animation: bounceLogo 2s infinite ease-in-out; }
+  @keyframes bounceLogo { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+  .subtitle{ color:var(--ink-soft); font-weight:700; font-size:14px; margin-bottom:16px; text-align:center; }
+  input{
+    width:100%; padding:13px 14px; margin:8px 0; border-radius:14px;
+    border:2px solid var(--border); background:var(--paper-card); color:var(--ink);
+    font-family:'Nunito',sans-serif; font-size:16px; font-weight:700; outline:none;
+  }
+  input:focus{ border-color:var(--duo-blue); box-shadow:0 0 0 3px rgba(28,176,246,0.2); }
+  button{
+    width:100%; padding:14px; margin:8px 0; border:none; border-radius:16px;
+    font-family:'Baloo 2', sans-serif; font-size:16px; font-weight:700;
+    color:#fff; cursor:pointer; background:var(--duo-green); box-shadow:0 5px 0 var(--duo-green-dark);
+  }
+  button:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--duo-green-dark); }
+  .btn-blue{ background:var(--duo-blue); box-shadow:0 5px 0 var(--duo-blue-dark); }
+  .btn-blue:active{ box-shadow:0 1px 0 var(--duo-blue-dark); }
+  p.error{ color:var(--duo-red); font-size:14px; font-weight:700; margin-top:8px; text-align:center; min-height:18px; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="brand"><span class="logo">♟️</span><h1>Xadrez Pro</h1></div>
+  <p class="subtitle">Entre para jogar com seus amigos</p>
+  <input type="text" id="username" placeholder="Nome de usuário (ex: DONO)" autocomplete="off">
+  <input type="password" id="password" placeholder="Senha">
+  <button id="login-btn">Entrar</button>
+  <button id="register-btn" class="btn-blue">Criar conta</button>
+  <p class="error" id="auth-error"></p>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCtXluQl2mtkehl9FICeJBPbP-_A3YRhzk",
+  authDomain: "testgyyyy.firebaseapp.com",
+  projectId: "testgyyyy",
+  storageBucket: "testgyyyy.firebasestorage.app",
+  messagingSenderId: "393006784345",
+  appId: "1:393006784345:web:df958ca70ac79ccc603648",
+  measurementId: "G-5RY35J0MQ6"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+setPersistence(auth, browserLocalPersistence).catch(console.error);
+
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const authError = document.getElementById('auth-error');
+
+function getFakeEmail(username){ return username.trim().toLowerCase() + "@xadrezpro.local"; }
+
+async function authenticateUser(user, pass, isRegister = false){
+  authError.innerText = "";
+  if(!user || !pass){ authError.innerText = "Preencha usuário e senha!"; return; }
+
+  const isDono = user.toUpperCase() === 'DONO' && pass === 'A7v-72fd9-019';
+  const targetEmail = isDono ? "dono@xadrezpro.local" : getFakeEmail(user);
+  const targetPass = isDono ? "A7v-72fd9-019" : pass;
+
+  try {
+    if(isRegister){
+      const cred = await createUserWithEmailAndPassword(auth, targetEmail, targetPass);
+      await setDoc(doc(db,'users',cred.user.uid), { 
+        wins: isDono ? 999 : 0, losses:0, draws:0, 
+        displayName: isDono ? 'DONO' : user, avatar:'', lastNameChange:0 
+      });
+    } else {
+      try {
+        await signInWithEmailAndPassword(auth, targetEmail, targetPass);
+      } catch(err) {
+        if(isDono){
+          const cred = await createUserWithEmailAndPassword(auth, targetEmail, targetPass);
+          await setDoc(doc(db,'users',cred.user.uid), { wins:999, losses:0, draws:0, displayName:'DONO', avatar:'', lastNameChange:0 });
+        } else {
+          throw err;
+        }
+      }
+    }
+    window.location.href = "menus.html";
+  } catch(error){ 
+    authError.innerText = "Erro: " + error.message; 
+  }
+}
+
+document.getElementById('register-btn').addEventListener('click', () => authenticateUser(usernameInput.value.trim(), passwordInput.value, true));
+document.getElementById('login-btn').addEventListener('click', () => authenticateUser(usernameInput.value.trim(), passwordInput.value, false));
+</script>
+</body>
+</html>
