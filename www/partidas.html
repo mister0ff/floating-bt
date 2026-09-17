@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xadrez Pro - Partida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --duo-green:#58CC02; --duo-green-dark:#46A302;
+    --duo-blue:#1CB0F6; --duo-blue-dark:#1899D6;
+    --duo-gold:#FFC800; --duo-gold-dark:#E5AC00;
+    --duo-red:#FF4B4B; --duo-red-dark:#EA2B2B;
+    --ink:#FFFFFF; --ink-soft:#AFAFAF;
+    --paper:#1f2e35; --paper-card:#13222a; --bg:#0e171b; --border:#2c404c;
+    --light-square:#f0d9b5; --dark-square:#b58863;
+  }
+  body.theme-emerald{ --light-square:#eeeed2; --dark-square:#769656; }
+  body.theme-ocean{ --light-square:#dee3e6; --dark-square:#8ca2ad; }
+  body.theme-dark{ --light-square:#6e6e6e; --dark-square:#2b2b2b; }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+    font-family:'Nunito', sans-serif; display:flex; flex-direction:column; align-items:center; padding:12px;
+  }
+  .hidden{ display:none !important; }
+  button{
+    padding:14px; border:none; border-radius:16px; font-family:'Baloo 2', sans-serif; font-size:16px; font-weight:700;
+    color:#fff; cursor:pointer; background:var(--duo-green); box-shadow:0 5px 0 var(--duo-green-dark);
+  }
+  button:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--duo-green-dark); }
+  .btn-blue{ background:var(--duo-blue); box-shadow:0 5px 0 var(--duo-blue-dark); }
+  .btn-red{ background:var(--duo-red); box-shadow:0 5px 0 var(--duo-red-dark); }
+  .btn-small{ width:auto; padding:6px 14px; font-size:13px; border-radius:12px; box-shadow:0 3px 0 rgba(0,0,0,0.3); }
+
+  @keyframes rainbowGlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+  .animated-name { background: linear-gradient(90deg, #FFC800, #FF4B4B, #CE82FF, #1CB0F6, #58CC02); background-size: 300% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: rainbowGlow 4s linear infinite; font-weight: 900 !important; }
+  .owner-emblem { display: inline-flex; align-items: center; background: linear-gradient(135deg, #FFC800, #FF9600); color: #13222a; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 8px; box-shadow: 0 3px 0 rgba(0,0,0,0.3); margin-left: 6px; }
+
+  .avatar{ width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:700; color:#fff; border:2px solid var(--border); background-size:cover; background-position:center; flex-shrink:0; }
+  .avatar.active-turn{ box-shadow:0 0 0 3px var(--duo-green), 0 0 12px rgba(88,204,2,0.7); }
+
+  #game-screen{ width:100%; max-width:500px; display:flex; flex-direction:column; align-items:center; }
+  .top-bar{ display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:8px; }
+  .room-tag{ background:var(--paper-card); border:2px solid var(--border); border-radius:12px; padding:6px 12px; font-weight:800; font-size:13px; color:var(--ink-soft); }
+
+  .match-players-bar{
+    display:flex; align-items:center; justify-content:space-between; width:100%;
+    background:var(--paper-card); border:2px solid var(--border); border-radius:18px; padding:10px 14px; margin:6px 0;
+  }
+  .player-side{ display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+  .player-side.opponent{ justify-content:flex-end; text-align:right; }
+  .player-name{ font-family:'Baloo 2'; font-weight:700; font-size:15px; display:flex; align-items:center; gap:6px; color:var(--ink); }
+  .player-side.opponent .player-name{ justify-content:flex-end; }
+  .you-tag{ font-size:10px; background:var(--duo-blue); color:#fff; border-radius:6px; padding:1px 5px; font-weight:800; }
+  .vs-badge{ font-family:'Baloo 2'; font-size:16px; font-weight:800; color:var(--duo-gold); padding:0 6px; }
+  
+  .captured-row{ display:flex; flex-wrap:wrap; gap:1px; min-height:16px; margin-top:2px; font-size:14px; }
+  .player-side.opponent .captured-row{ justify-content:flex-end; }
+  .cap-piece.white{ color:#fff; -webkit-text-stroke:1px #111; }
+  .cap-piece.black{ color:#222; -webkit-text-stroke:1px #888; }
+  .material-adv{ font-size:11px; font-weight:800; color:var(--duo-green); margin-left:4px; }
+
+  #status-banner{
+    width:100%; text-align:center; padding:10px; border-radius:14px; margin:6px 0;
+    font-family:'Baloo 2'; font-weight:700; font-size:15px; color:#fff; background:var(--duo-blue); box-shadow:0 4px 0 var(--duo-blue-dark);
+  }
+  #status-banner.your-turn{ background:var(--duo-green); box-shadow:0 4px 0 var(--duo-green-dark); }
+  #status-banner.opponent-turn{ background:#3c525f; box-shadow:0 4px 0 #283740; }
+  #status-banner.check{ background:var(--duo-red); box-shadow:0 4px 0 var(--duo-red-dark); }
+  #status-banner.game-over{ background:var(--duo-gold); color:#13222a; box-shadow:0 4px 0 var(--duo-gold-dark); }
+
+  .chessboard-container{ position:relative; width:100%; max-width:460px; margin:6px 0; }
+  .chessboard{
+    display:grid; grid-template-columns:repeat(8, 1fr); grid-template-rows:repeat(8, 1fr);
+    width:100%; aspect-ratio:1/1; border:6px solid #1f2e35; border-radius:16px; overflow:hidden; box-shadow:0 10px 0 rgba(0,0,0,0.35);
+  }
+  .square{ display:flex; justify-content:center; align-items:center; cursor:pointer; position:relative; }
+  .light{ background-color:var(--light-square); }
+  .dark{ background-color:var(--dark-square); }
+  .piece{ font-size:min(9vw,38px); line-height:1; user-select:none; z-index:2; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.4)); }
+  .piece.white{ color:#fff; -webkit-text-stroke:1.4px #1a1a1a; }
+  .piece.black{ color:#181818; -webkit-text-stroke:1.2px #888; }
+  .square.selected{ box-shadow:inset 0 0 0 4px var(--duo-gold); background-color:rgba(255,200,0,0.35) !important; }
+  .square.last-move{ box-shadow:inset 0 0 0 4px rgba(28,176,246,0.65); }
+  .square.king-check{ box-shadow:inset 0 0 0 4px var(--duo-red); }
+  .square.highlight::after{ content:''; width:24%; height:24%; background:rgba(0,0,0,0.35); border-radius:50%; position:absolute; z-index:1; }
+  .square.highlight-capture::after{ content:''; width:80%; height:80%; border:4px solid rgba(255,75,75,0.85); border-radius:50%; position:absolute; z-index:1; }
+
+  #floating-reaction-container{ position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:30; }
+  .floating-reaction{ position:absolute; font-size:40px; animation: floatUp 1.8s ease-out forwards; }
+  @keyframes floatUp{ 0%{transform:translateY(60px) scale(0.5);opacity:0;} 20%{transform:translateY(20px) scale(1.2);opacity:1;} 100%{transform:translateY(-140px) scale(0.9);opacity:0;} }
+
+  .reaction-bar{ display:flex; justify-content:center; gap:6px; width:100%; max-width:460px; background:var(--paper-card); padding:6px; border-radius:14px; border:2px solid var(--border); }
+  .reaction-btn{ background:var(--paper); border:2px solid var(--border); border-radius:10px; font-size:16px; width:36px; height:36px; cursor:pointer; padding:0; color:var(--ink); }
+
+  .chat-box{ width:100%; max-width:460px; background:var(--paper-card); border:2px solid var(--border); border-radius:16px; padding:10px; margin-top:6px; }
+  .chat-messages{ height:90px; overflow-y:auto; font-size:12px; font-weight:600; display:flex; flex-direction:column; gap:4px; margin-bottom:6px; }
+  .chat-msg{ background:var(--paper); border:1px solid var(--border); padding:4px 8px; border-radius:10px; word-break:break-word; max-width:85%; }
+  .chat-msg.mine{ align-self:flex-end; background:rgba(28,176,246,0.18); border-color:var(--duo-blue); }
+  .chat-msg b{ color:var(--duo-blue); font-family:'Baloo 2'; display:block; font-size:10px; }
+  .chat-input-row{ display:flex; gap:6px; }
+  .chat-input-row input{ flex:1; padding:8px; border-radius:10px; border:2px solid var(--border); background:var(--paper); color:#fff; font-weight:700; outline:none; }
+  .chat-input-row button{ width:75px; padding:6px; font-size:12px; margin:0; }
+
+  #move-history{ width:100%; max-width:460px; background:var(--paper-card); border:2px solid var(--border); border-radius:12px; padding:6px 10px; margin-top:6px; max-height:65px; overflow-y:auto; font-size:11px; font-weight:700; }
+  .actions-row{ display:flex; gap:8px; width:100%; max-width:460px; margin-top:6px; }
+  .actions-row button{ flex:1; margin:0; padding:10px; font-size:14px; }
+
+  #end-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.75); display:flex; align-items:center; justify-content:center; z-index:150; backdrop-filter: blur(3px); }
+  #end-card{ background:var(--paper); border:2px solid var(--border); border-radius:24px; padding:24px; text-align:center; max-width:300px; width:90%; }
+</style>
+</head>
+<body>
+
+<div id="game-screen">
+  <div class="top-bar">
+    <span class="room-tag">Sala: <span id="room-code-box">----</span></span>
+    <button id="leave-room-btn" class="btn-red btn-small">Sair</button>
+  </div>
+
+  <div class="match-players-bar">
+    <div class="player-side" id="you-panel">
+      <div class="avatar" id="you-avatar">?</div>
+      <div class="player-info">
+        <div class="player-name"><span id="you-name"></span><span id="you-owner-badge"></span><span class="you-tag">VOCÊ</span></div>
+        <div class="captured-row" id="you-captured"></div>
+      </div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="player-side opponent" id="opponent-panel">
+      <div class="player-info">
+        <div class="player-name"><span id="opponent-name">Aguardando...</span><span id="opponent-owner-badge"></span></div>
+        <div class="captured-row" id="opponent-captured"></div>
+      </div>
+      <div class="avatar" id="opponent-avatar">?</div>
+    </div>
+  </div>
+
+  <div id="status-banner">Carregando partida...</div>
+
+  <div class="chessboard-container">
+    <div id="floating-reaction-container"></div>
+    <div class="chessboard" id="chessboard"></div>
+  </div>
+
+  <div class="reaction-bar">
+    <button class="reaction-btn" data-emoji="👍">👍</button>
+    <button class="reaction-btn" data-emoji="🔥">🔥</button>
+    <button class="reaction-btn" data-emoji="😂">😂</button>
+    <button class="reaction-btn" data-emoji="😮">😮</button>
+    <button class="reaction-btn" data-emoji="👑">👑</button>
+  </div>
+
+  <div class="chat-box">
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Mensagem..." autocomplete="off">
+      <button id="chat-send-btn" class="btn-blue">Enviar</button>
+    </div>
+  </div>
+
+  <div id="move-history"><span style="color:var(--ink-soft)">Histórico de lances...</span></div>
+  <div class="actions-row">
+    <button id="resign-btn" class="btn-red">Desistir</button>
+  </div>
+</div>
+
+<div id="end-overlay" class="hidden">
+  <div id="end-card">
+    <span style="font-size:48px;" id="end-emoji">🏆</span>
+    <h2 id="end-title" style="margin:6px 0;">Fim de jogo</h2>
+    <p id="end-subtitle" style="color:var(--ink-soft); font-weight:700; margin-bottom:14px;"></p>
+    <button id="end-lobby-btn" style="width:100%;">Voltar ao Menu</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, onSnapshot, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCtXluQl2mtkehl9FICeJBPbP-_A3YRhzk",
+  authDomain: "testgyyyy.firebaseapp.com",
+  projectId: "testgyyyy",
+  storageBucket: "testgyyyy.firebasestorage.app",
+  messagingSenderId: "393006784345",
+  appId: "1:393006784345:web:df958ca70ac79ccc603648",
+  measurementId: "G-5RY35J0MQ6"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const urlParams = new URLSearchParams(window.location.search);
+const roomCode = urlParams.get('room');
+if(!roomCode) window.location.href = "menus.html";
+
+let currentUsername = "";
+let currentUid = null;
+let currentAvatarData = "";
+let playerRole = null;
+let selectedPieceIndex = null;
+let legalMovesForSelected = [];
+let lastSeenReactionTime = 0;
+
+const GLYPH = { w_king:'♔', w_queen:'♕', w_rook:'♖', w_bishop:'♗', w_knight:'♘', w_pawn:'♙', b_king:'♚', b_queen:'♛', b_rook:'♜', b_bishop:'♝', b_knight:'♞', b_pawn:'♟' };
+const PIECE_VALUE = { pawn:1, knight:3, bishop:3, rook:5, queen:9, king:0 };
+const AVATAR_COLORS = ['#FF9600','#1CB0F6','#CE82FF','#58CC02','#FF4B4B','#FFC800','#2B70C9'];
+function avatarColorFor(name){ let h=0; for(const ch of (name||'User')) h=(h*31+ch.charCodeAt(0))%997; return AVATAR_COLORS[h%AVATAR_COLORS.length]; }
+function isUserOwner(name){ return name && name.trim().toUpperCase() === 'DONO'; }
+function squareName(idx){ return "abcdefgh"[idx%8] + (8-Math.floor(idx/8)); }
+
+const moveAudio = new Audio("https://cdn.discordapp.com/attachments/1462160007893356677/1549940644426809376/movimento.mp3");
+const capturaAudio = new Audio("https://cdn.discordapp.com/attachments/1462160007893356677/1549940617579339786/captura2.mp3?ex=6aac862f&is=6aab34af&hm=e2198a075d14fe6fa5de7f20a9476e17c330a4ff1de8ae8c7892f937ec399f33&");
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user){ window.location.href = "login.html"; return; }
+  currentUid = user.uid;
+  const userSnap = await getDoc(doc(db,'users',user.uid));
+  if(userSnap.exists()){
+    currentUsername = userSnap.data().displayName || 'Jogador';
+    currentAvatarData = userSnap.data().avatar || '';
+  }
+  if(isUserOwner(currentUsername)) currentUsername = 'DONO';
+  initMatch();
+});
+
+function initMatch(){
+  document.getElementById('room-code-box').innerText = roomCode;
+  const roomRef = doc(db, 'rooms', roomCode);
+
+  onSnapshot(roomRef, async (snap) => {
+    if(!snap.exists()) return;
+    const data = snap.data();
+    
+    if(data.players.white.name === currentUsername || data.players.white.uid === currentUid) playerRole = 'white';
+    else playerRole = 'black';
+
+    renderPanels(data);
+    if(data.status === 'waiting'){
+      document.getElementById('status-banner').innerText = "Aguardando oponente...";
+      return;
+    }
+    renderBoard(data);
+    renderMoveHistory(data);
+    renderStatusBanner(data);
+    renderChat(data.messages || []);
+    checkNewReaction(data.lastReaction);
+  });
+}
+
+function renderPanels(data){
+  const you = playerRole==='white' ? data.players.white : data.players.black;
+  const opp = playerRole==='white' ? data.players.black : data.players.white;
+
+  const youNameEl = document.getElementById('you-name');
+  youNameEl.innerText = you;
+  if(isUserOwner(you?.name)){ youNameEl.classList.add('animated-name'); document.getElementById('you-owner-badge').innerHTML = '<span class="owner-emblem">DONO</span>'; }
+  const yAvatar = document.getElementById('you-avatar');
+  yAvatar.style.background = you?.avatar ? `url('${you.avatar}') center/cover` : avatarColorFor(you?.name);
+  yAvatar.innerText = you?.avatar ? '' : (you?.name?.[0]||'?');
+
+  const oppNameEl = document.getElementById('opponent-name');
+  if(opp){
+    oppNameEl.innerText = opp.name;
+    if(isUserOwner(opp.name)){ oppNameEl.classList.add('animated-name'); document.getElementById('opponent-owner-badge').innerHTML = '<span class="owner-emblem">DONO</span>'; }
+    const oAvatar = document.getElementById('opponent-avatar');
+    oAvatar.style.background = opp.avatar ? `url('${opp.avatar}') center/cover` : avatarColorFor(opp.name);
+    oAvatar.innerText = opp.avatar ? '' : opp.name[0];
+  } else {
+    oppNameEl.innerText = "Aguardando...";
+  }
+
+  const myColor = playerRole==='white' ? 'w' : 'b';
+  const oppColor = playerRole==='white' ? 'b' : 'w';
+  const captured = data.captured || { w:[], b:[] };
+  const myCaps = captured[oppColor] || [];
+  const oppCaps = captured[myColor] || [];
+
+  const order = { queen:0, rook:1, bishop:2, knight:3, pawn:4 };
+  const sortFn = (a,b) => order[a.split('_')[1]] - order[b.split('_')[1]];
+
+  document.getElementById('you-captured').innerHTML = [...myCaps].sort(sortFn).map(p=>`<span class="cap-piece ${p[0]==='w'?'white':'black'}">${GLYPH[p]}</span>`).join('');
+  document.getElementById('opponent-captured').innerHTML = [...oppCaps].sort(sortFn).map(p=>`<span class="cap-piece ${p[0]==='w'?'white':'black'}">${GLYPH[p]}</span>`).join('');
+}
+
+function renderBoard(data){
+  const boardDiv = document.getElementById('chessboard');
+  boardDiv.innerHTML = '';
+  const flip = playerRole === 'black';
+  const boardState = data.board;
+  const kingCheck = isKingInCheck(boardState, data.turn[0]) ? boardState.indexOf(data.turn[0]+'_king') : -1;
+
+  for(let dr=0; dr<8; dr++){
+    for(let dc=0; dc<8; dc++){
+      const r = flip ? 7-dr : dr;
+      const c = flip ? 7-dc : dc;
+      const idx = r*8+c;
+      const sq = document.createElement('div');
+      sq.className = `square ${(r+c)%2===0?'light':'dark'}`;
+
+      const p = boardState[idx];
+      if(p && GLYPH[p]){
+        const span = document.createElement('span');
+        span.className = `piece ${p[0]==='w'?'white':'black'}`;
+        span.innerText = GLYPH[p];
+        sq.appendChild(span);
+      }
+      if(selectedPieceIndex === idx) sq.classList.add('selected');
+      if(legalMovesForSelected.includes(idx)) sq.classList.add(boardState[idx] ? 'highlight-capture' : 'highlight');
+      if(idx === kingCheck) sq.classList.add('king-check');
+      if(data.lastMove && (data.lastMove.from===idx || data.lastMove.to===idx)) sq.classList.add('last-move');
+
+      sq.addEventListener('click', () => handleSquareClick(idx, data));
+      boardDiv.appendChild(sq);
+    }
+  }
+}
+
+function renderMoveHistory(data){
+  const hist = data.moveHistory || [];
+  if(hist.length === 0) return;
+  let html = '';
+  for(let i=0; i<hist.length; i+=2){
+    html += `<span><b>${i/2+1}.</b>${hist[i]} ${hist[i+1]||''} </span>`;
+  }
+  const histDiv = document.getElementById('move-history');
+  histDiv.innerHTML = html;
+  histDiv.scrollTop = histDiv.scrollHeight;
+}
+
+function renderStatusBanner(data){
+  const banner = document.getElementById('status-banner');
+  const isMyTurn = data.turn[0] === (playerRole==='white'?'w':'b');
+  banner.className = '';
+  if(data.status === 'checkmate'){
+    banner.className = 'game-over';
+    banner.innerText = "🏆 Xeque-mate!";
+    showEnd(data.turn[0] !== (playerRole==='white'?'w':'b'));
+    return;
+  }
+  if(data.status === 'check'){
+    banner.className = 'check';
+    banner.innerText = "⚠️ Rei em Xeque!";
+  } else if(isMyTurn){
+    banner.className = 'your-turn';
+    banner.innerText = "✅ Sua vez!";
+  } else {
+    banner.className = 'opponent-turn';
+    banner.innerText = "⏳ Vez do oponente...";
+  }
+}
+
+function renderChat(msgs){
+  const chatDiv = document.getElementById('chat-messages');
+  chatDiv.innerHTML = msgs.map(m => `<div class="chat-msg ${m.sender===currentUsername?'mine':''}"><b>${m.sender}</b>${m.text}</div>`).join('');
+  chatDiv.scrollTop = chatDiv.scrollHeight;
+}
+
+document.getElementById('chat-send-btn').addEventListener('click', async () => {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+  await updateDoc(doc(db,'rooms',roomCode), { messages: arrayUnion({ sender: currentUsername, text, time: Date.now() }) });
+});
+
+document.querySelectorAll('.reaction-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    await updateDoc(doc(db,'rooms',roomCode), { lastReaction: { emoji: btn.getAttribute('data-emoji'), time: Date.now() } });
+  });
+});
+
+function checkNewReaction(r){
+  if(!r || r.time <= lastSeenReactionTime) return;
+  lastSeenReactionTime = r.time;
+  const el = document.createElement('div');
+  el.className = 'floating-reaction'; el.innerText = r.emoji;
+  el.style.left = Math.floor(Math.random()*70)+15 + '%'; el.style.bottom = '20px';
+  document.getElementById('floating-reaction-container').appendChild(el);
+  setTimeout(() => el.remove(), 1800);
+}
+
+function showEnd(won){
+  document.getElementById('end-overlay').classList.remove('hidden');
+  document.getElementById('end-title').innerText = won ? "Você Venceu!" : "Você Perdeu!";
+  document.getElementById('end-subtitle').innerText = won ? "Parabéns pela vitória" : "Mais sorte na próxima";
+}
+document.getElementById('end-lobby-btn').addEventListener('click', () => window.location.href = "menus.html");
+document.getElementById('leave-room-btn').addEventListener('click', () => window.location.href = "menus.html");
+
+/* Motor de Xadrez Simplificado para Lances */
+const inBounds = (r,c) => r>=0 && r<8 && c>=0 && c<8;
+function getAttackSquares(idx, b){
+  const p = b[idx]; if(!p) return [];
+  const type = p.split('_')[1], r = Math.floor(idx/8), c = idx%8;
+  let sqs = [];
+  if(type==='pawn'){
+    const dir = p[0]==='w' ? -1 : 1;
+    [[dir,-1],[dir,1]].forEach(([dr,dc])=>{ if(inBounds(r+dr,c+dc)) sqs.push((r+dr)*8+c+dc); });
+  } else if(type==='knight'){
+    [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]].forEach(([dr,dc])=>{ if(inBounds(r+dr,c+dc)) sqs.push((r+dr)*8+c+dc); });
+  } else {
+    let dirs = type==='king'||type==='queen'? [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]] : type==='rook'? [[1,0],[-1,0],[0,1],[0,-1]] : [[1,1],[1,-1],[-1,1],[-1,-1]];
+    dirs.forEach(([dr,dc])=>{
+      let step=1;
+      while(true){
+        const tr=r+dr*step, tc=c+dc*step;
+        if(!inBounds(tr,tc)) break;
+        sqs.push(tr*8+tc);
+        if(b[tr*8+tc]) break;
+        step++;
+      }
+    });
+  }
+  return sqs;
+}
+function isSquareAttacked(b, sq, byColor){
+  for(let i=0; i<64; i++){ if(b[i] && b[i][0]===byColor && getAttackSquares(i, b).includes(sq)) return true; }
+  return false;
+}
+function isKingInCheck(b, color){
+  const kIdx = b.indexOf(color+'_king');
+  return kIdx !== -1 && isSquareAttacked(b, kIdx, color==='w'?'b':'w');
+}
+function getPseudoMoves(idx, b){
+  const p = b[idx]; if(!p) return [];
+  const type = p.split('_')[1], r = Math.floor(idx/8), c = idx%8, col = p[0];
+  let moves = [];
+  if(type==='pawn'){
+    const dir = col==='w' ? -1 : 1;
+    if(inBounds(r+dir,c) && !b[(r+dir)*8+c]) moves.push((r+dir)*8+c);
+    [-1,1].forEach(dc=>{ if(inBounds(r+dir,c+dc) && b[(r+dir)*8+c+dc] && b[(r+dir)*8+c+dc][0]!==col) moves.push((r+dir)*8+c+dc); });
+  } else {
+    moves = getAttackSquares(idx, b).filter(t => !b[t] || b[t][0] !== col);
+  }
+  return moves;
+}
+
+async function handleSquareClick(idx, data){
+  if(data.turn[0] !== (playerRole==='white'?'w':'b')) return;
+  const board = [...data.board];
+  const p = board[idx];
+
+  if(p && p[0] === (playerRole==='white'?'w':'b')){
+    selectedPieceIndex = idx;
+    legalMovesForSelected = getPseudoMoves(idx, board);
+    renderBoard(data);
+    return;
+  }
+
+  if(selectedPieceIndex !== null && legalMovesForSelected.includes(idx)){
+    const from = selectedPieceIndex;
+    const moving = board[from];
+    const captured = board[idx];
+    
+    board[idx] = moving;
+    board[from] = null;
+    selectedPieceIndex = null; legalMovesForSelected = [];
+
+    const nextTurn = data.turn === 'white' ? 'black' : 'white';
+    const newCaptured = { w:[...(data.captured?.w||[])], b:[...(data.captured?.b||[])] };
+    if(captured) newCaptured[captured[0]].push(captured);
+
+    if(captured) capturaAudio.play().catch(()=>{}); else moveAudio.play().catch(()=>{});
+
+    await updateDoc(doc(db,'rooms',roomCode), {
+      board, turn: nextTurn, captured: newCaptured,
+      moveHistory: arrayUnion(squareName(idx)), lastMove: { from, to: idx }
+    });
+  }
+}
+</script>
+</body>
+</html>
+
