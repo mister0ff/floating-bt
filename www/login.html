@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xadrez Pro - Login</title>
+<title>Xadrez Pro - Acesso</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -21,46 +21,76 @@
   }
   .card{
     width:100%; max-width:440px; background:var(--paper); padding:24px; border-radius:24px;
-    border:2px solid var(--border); box-shadow: 0 8px 0 rgba(0,0,0,0.35); position:relative; display:flex; flex-direction:column;
+    border:2px solid var(--border); box-shadow: 0 8px 0 rgba(0,0,0,0.35); display:flex; flex-direction:column;
   }
-  h1{ font-family:'Baloo 2', sans-serif; margin:0 0 6px; color:var(--ink); font-size:28px; }
+  h1{ font-family:'Baloo 2', sans-serif; margin:0 0 6px; color:var(--ink); font-size:28px; text-align:center; }
   .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:6px; }
   .logo{ font-size:36px; animation: bounceLogo 2s infinite ease-in-out; }
   @keyframes bounceLogo { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
   .subtitle{ color:var(--ink-soft); font-weight:700; font-size:14px; margin-bottom:16px; text-align:center; }
+  
+  .tabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .tab-btn{ flex:1; padding:10px; border-radius:12px; border:2px solid var(--border); background:var(--paper-card); color:var(--ink-soft); font-family:'Baloo 2'; font-weight:700; cursor:pointer; }
+  .tab-btn.active{ background:var(--duo-blue); border-color:var(--duo-blue-dark); color:#fff; box-shadow:0 3px 0 var(--duo-blue-dark); }
+
+  label{ font-size:12px; font-weight:800; color:var(--ink-soft); margin-top:8px; display:block; }
   input{
-    width:100%; padding:13px 14px; margin:8px 0; border-radius:14px;
+    width:100%; padding:12px 14px; margin:4px 0 10px 0; border-radius:14px;
     border:2px solid var(--border); background:var(--paper-card); color:var(--ink);
-    font-family:'Nunito',sans-serif; font-size:16px; font-weight:700; outline:none;
+    font-family:'Nunito',sans-serif; font-size:15px; font-weight:700; outline:none;
   }
   input:focus{ border-color:var(--duo-blue); box-shadow:0 0 0 3px rgba(28,176,246,0.2); }
-  button{
+  button.action-btn{
     width:100%; padding:14px; margin:8px 0; border:none; border-radius:16px;
     font-family:'Baloo 2', sans-serif; font-size:16px; font-weight:700;
     color:#fff; cursor:pointer; background:var(--duo-green); box-shadow:0 5px 0 var(--duo-green-dark);
   }
-  button:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--duo-green-dark); }
-  .btn-blue{ background:var(--duo-blue); box-shadow:0 5px 0 var(--duo-blue-dark); }
-  .btn-blue:active{ box-shadow:0 1px 0 var(--duo-blue-dark); }
-  p.error{ color:var(--duo-red); font-size:14px; font-weight:700; margin-top:8px; text-align:center; min-height:18px; }
+  button.action-btn:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--duo-green-dark); }
+  p.error{ color:var(--duo-red); font-size:13px; font-weight:700; margin-top:6px; text-align:center; min-height:18px; }
+  .form-section{ display:none; }
+  .form-section.active{ display:block; }
 </style>
 </head>
 <body>
 
 <div class="card">
   <div class="brand"><span class="logo">♟️</span><h1>Xadrez Pro</h1></div>
-  <p class="subtitle">Entre para jogar com seus amigos</p>
-  <input type="text" id="username" placeholder="Nome de usuário (ex: DONO)" autocomplete="off">
-  <input type="password" id="password" placeholder="Senha">
-  <button id="login-btn">Entrar</button>
-  <button id="register-btn" class="btn-blue">Criar conta</button>
+  <p class="subtitle">Entre ou crie sua conta para jogar</p>
+  
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-login-btn">Entrar</button>
+    <button class="tab-btn" id="tab-register-btn">Criar Conta</button>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="login-section" class="form-section active">
+    <label>@NICK</label>
+    <input type="text" id="login-nick" placeholder="@seu_nick" autocomplete="off">
+    <label>SENHA</label>
+    <input type="password" id="login-pass" placeholder="Sua senha">
+    <button class="action-btn" id="login-btn">Entrar</button>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="register-section" class="form-section">
+    <label>NOME DE USUÁRIO</label>
+    <input type="text" id="reg-name" placeholder="Seu Nome" autocomplete="off">
+    <label>@NICK</label>
+    <input type="text" id="reg-nick" placeholder="@nick" autocomplete="off">
+    <label>SENHA</label>
+    <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres">
+    <label>REPETIR SENHA</label>
+    <input type="password" id="reg-pass2" placeholder="Confirme a senha">
+    <button class="action-btn" id="register-btn" style="background:var(--duo-blue); box-shadow:0 5px 0 var(--duo-blue-dark);">Cadastrar</button>
+  </div>
+
   <p class="error" id="auth-error"></p>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, query, collection, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCtXluQl2mtkehl9FICeJBPbP-_A3YRhzk",
@@ -77,47 +107,87 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 setPersistence(auth, browserLocalPersistence).catch(console.error);
 
-const usernameInput = document.getElementById('username');
-const passwordInput = document.getElementById('password');
 const authError = document.getElementById('auth-error');
 
-function getFakeEmail(username){ return username.trim().toLowerCase() + "@xadrezpro.local"; }
-
-async function authenticateUser(user, pass, isRegister = false){
+document.getElementById('tab-login-btn').addEventListener('click', () => {
+  document.getElementById('tab-login-btn').classList.add('active');
+  document.getElementById('tab-register-btn').classList.remove('active');
+  document.getElementById('login-section').classList.add('active');
+  document.getElementById('register-section').classList.remove('active');
   authError.innerText = "";
-  if(!user || !pass){ authError.innerText = "Preencha usuário e senha!"; return; }
+});
 
-  const isDono = user.toUpperCase() === 'DONO' && pass === 'A7v-72fd9-019';
-  const targetEmail = isDono ? "dono@xadrezpro.local" : getFakeEmail(user);
-  const targetPass = isDono ? "A7v-72fd9-019" : pass;
+document.getElementById('tab-register-btn').addEventListener('click', () => {
+  document.getElementById('tab-register-btn').classList.add('active');
+  document.getElementById('tab-login-btn').classList.remove('active');
+  document.getElementById('register-section').classList.add('active');
+  document.getElementById('login-section').classList.remove('active');
+  authError.innerText = "";
+});
 
-  try {
-    if(isRegister){
-      const cred = await createUserWithEmailAndPassword(auth, targetEmail, targetPass);
-      await setDoc(doc(db,'users',cred.user.uid), { 
-        wins: isDono ? 999 : 0, losses:0, draws:0, 
-        displayName: isDono ? 'DONO' : user, avatar:'', lastNameChange:0 
-      });
-    } else {
-      try {
-        await signInWithEmailAndPassword(auth, targetEmail, targetPass);
-      } catch(err) {
-        if(isDono){
-          const cred = await createUserWithEmailAndPassword(auth, targetEmail, targetPass);
-          await setDoc(doc(db,'users',cred.user.uid), { wins:999, losses:0, draws:0, displayName:'DONO', avatar:'', lastNameChange:0 });
-        } else {
-          throw err;
-        }
-      }
-    }
-    window.location.href = "menus.html";
-  } catch(error){ 
-    authError.innerText = "Erro: " + error.message; 
-  }
+function formatNick(n){
+  n = n.trim().toLowerCase();
+  return n.startsWith('@') ? n : '@' + n;
 }
 
-document.getElementById('register-btn').addEventListener('click', () => authenticateUser(usernameInput.value.trim(), passwordInput.value, true));
-document.getElementById('login-btn').addEventListener('click', () => authenticateUser(usernameInput.value.trim(), passwordInput.value, false));
+document.getElementById('login-btn').addEventListener('click', async () => {
+  authError.innerText = "";
+  const nick = formatNick(document.getElementById('login-nick').value);
+  const pass = document.getElementById('login-pass').value;
+  if(!nick || !pass){ authError.innerText = "Preencha todos os campos!"; return; }
+
+  const isDono = nick === '@dono' && pass === 'A7v-72fd9-019';
+  const email = isDono ? "dono@xadrezpro.local" : `${nick.replace('@','')}@xadrezpro.local`;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    window.location.href = "menus.html";
+  } catch(err){
+    if(isDono){
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await setDoc(doc(db,'users',cred.user.uid), {
+          displayName: 'DONO', nick: '@dono', wins: 999, losses: 0, draws: 0, points: 5000,
+          insignia: '10', unlockedIns: ['01','02','03','04','05','06','07','08','09','10'],
+          vips: ['10'], avatar: '', followers: [], following: [], theme: 'theme-wood'
+        });
+        window.location.href = "menus.html";
+        return;
+      } catch(e){}
+    }
+    authError.innerText = "Nick ou senha incorretos!";
+  }
+});
+
+document.getElementById('register-btn').addEventListener('click', async () => {
+  authError.innerText = "";
+  const name = document.getElementById('reg-name').value.trim();
+  const nick = formatNick(document.getElementById('reg-nick').value);
+  const pass = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+
+  if(!name || !nick || !pass){ authError.innerText = "Preencha todos os campos!"; return; }
+  if(pass !== pass2){ authError.innerText = "As senhas não coincidem!"; return; }
+  if(pass.length < 6){ authError.innerText = "A senha deve ter pelo menos 6 caracteres!"; return; }
+
+  // Verificar se nick já existe
+  const q = query(collection(db, 'users'), where('nick', '==', nick));
+  const snap = await getDocs(q);
+  if(!snap.empty){ authError.innerText = "Este @nick já está em uso!"; return; }
+
+  const email = `${nick.replace('@','')}@xadrezpro.local`;
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await setDoc(doc(db,'users',cred.user.uid), {
+      displayName: name, nick: nick, wins: 0, losses: 0, draws: 0, points: 100,
+      insignia: '01', unlockedIns: ['01'], vips: [], avatar: '', followers: [], following: [], theme: 'theme-wood'
+    });
+    window.location.href = "menus.html";
+  } catch(err){
+    authError.innerText = "Erro ao cadastrar: " + err.message;
+  }
+});
 </script>
 </body>
 </html>
