@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xadrez Pro - Menu</title>
+<title>Xadrez Pro - Menu Principal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -23,8 +23,8 @@
   h1,h2,h3{ font-family:'Baloo 2', sans-serif; margin:0 0 6px; color:var(--ink); }
   .hidden{ display:none !important; }
   .card{
-    width:100%; min-height:calc(100vh - 85px); background:var(--paper);
-    padding:20px; display:flex; flex-direction:column;
+    width:100%; max-width:600px; min-height:calc(100vh - 85px); background:var(--paper);
+    padding:20px; display:flex; flex-direction:column; border-left:2px solid var(--border); border-right:2px solid var(--border);
   }
   input, select{
     width:100%; padding:13px 14px; margin:8px 0; border-radius:14px;
@@ -39,11 +39,8 @@
   }
   button:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--duo-green-dark); }
   .btn-blue{ background:var(--duo-blue); box-shadow:0 5px 0 var(--duo-blue-dark); }
-  .btn-blue:active{ box-shadow:0 1px 0 var(--duo-blue-dark); }
   .btn-gray{ background:#3c525f; box-shadow:0 5px 0 #283740; }
-  .btn-gray:active{ box-shadow:0 1px 0 #283740; }
   .btn-red{ background:var(--duo-red); box-shadow:0 5px 0 var(--duo-red-dark); }
-  .btn-red:active{ box-shadow:0 1px 0 var(--duo-red-dark); }
   .btn-gold{ background:var(--duo-gold); color:#13222a; box-shadow:0 5px 0 var(--duo-gold-dark); }
   .btn-small{ width:auto; padding:6px 14px; font-size:13px; margin:0; border-radius:12px; box-shadow:0 3px 0 rgba(0,0,0,0.3); }
 
@@ -51,63 +48,40 @@
   p.success{ color:var(--duo-green); font-size:14px; font-weight:700; margin-top:8px; min-height:18px; }
   hr{ border:none; border-top:2px solid var(--border); margin:16px 0; width:100%; }
 
-  .brand{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
-  .brand-left{ display:flex; align-items:center; gap:10px; }
+  .brand{ display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:6px; }
   .logo{ font-size:36px; animation: bounceLogo 2s infinite ease-in-out; }
   @keyframes bounceLogo { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
-  .brand h2{ font-size:26px; color:var(--duo-green); margin:0; }
-  .subtitle{ color:var(--ink-soft); font-weight:700; font-size:14px; margin-bottom:16px; }
+  .brand h2{ font-size:28px; color:var(--duo-green); }
+  .subtitle{ color:var(--ink-soft); font-weight:700; font-size:14px; margin-bottom:16px; text-align:center; }
 
-  .points-pill{ background:var(--paper-card); border:2px solid var(--duo-gold); padding:4px 10px; border-radius:12px; font-family:'Baloo 2'; font-weight:800; font-size:14px; color:var(--duo-gold); display:flex; align-items:center; gap:4px; box-shadow:0 3px 0 rgba(0,0,0,0.3); }
+  @keyframes rainbowGlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+  @keyframes vipAnim { 0%{filter:hue-rotate(0deg);} 100%{filter:hue-rotate(360deg);} }
+  
+  .animated-name { background: linear-gradient(90deg, #FFC800, #FF4B4B, #CE82FF, #1CB0F6, #58CC02); background-size: 300% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: rainbowGlow 4s linear infinite; font-weight: 900 !important; }
+  .vip-name { background: linear-gradient(90deg, #FFC800, #FFA500, #FFD700); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; font-weight: 900 !important; }
+  .vip-plus-name { background: linear-gradient(90deg, #FFFFFF, #AFAFAF, #111111, #FFFFFF); background-size: 300% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: vipAnim 3s linear infinite; font-weight: 900 !important; }
+  .elite-name { background: linear-gradient(90deg, #9C27B0, #E040FB, #673AB7); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: vipAnim 4s linear infinite; font-weight: 900 !important; }
+  .emerald-name { color: #2ecc71 !important; font-weight: 800; }
+  .lapis-name { color: #3498db !important; font-weight: 800; }
+  .amethyst-name { color: #CE82FF !important; font-weight: 800; }
+  .ruby-name { color: #FF4B4B !important; font-weight: 800; }
 
-  /* Insignias & Gradients */
-  .name-ins-04{ color:#2ecc71 !important; font-weight:800; }
-  .name-ins-05{ color:#3498db !important; font-weight:800; }
-  .name-ins-06{ color:#9b59b6 !important; font-weight:800; }
-  .name-ins-07{ color:#e74c3c !important; font-weight:800; }
+  .owner-emblem { display: inline-flex; align-items: center; background: linear-gradient(135deg, #FFC800, #FF9600); color: #13222a; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 8px; box-shadow: 0 3px 0 rgba(0,0,0,0.3); margin-left: 6px; }
 
-  @keyframes gradientVip { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-  .name-ins-08 { background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: gradientVip 3s linear infinite; font-weight: 900 !important; }
-  .name-ins-09 { background: linear-gradient(90deg, #FFFFFF, #AAAAAA, #333333, #FFFFFF); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: gradientVip 3s linear infinite; font-weight: 900 !important; }
-  .name-ins-10 { background: linear-gradient(90deg, #a855f7, #ec4899, #8b5cf6, #a855f7); background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: gradientVip 3s linear infinite; font-weight: 900 !important; }
-
-  .ins-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:900; margin-left:4px; vertical-align:middle; box-shadow:0 2px 0 rgba(0,0,0,0.3); }
-  .ins-01{ background:#bdc3c7; color:#2c3e50; }
-  .ins-02{ background:#f1c40f; color:#7f6000; }
-  .ins-03{ background:#00cec9; color:#004d4a; }
-  .ins-04{ background:#2ecc71; color:#0b3d1e; }
-  .ins-05{ background:#3498db; color:#0f2c40; }
-  .ins-06{ background:#9b59b6; color:#2f113d; }
-  .ins-07{ background:#e74c3c; color:#4a120e; }
-  .ins-08{ background:linear-gradient(135deg, #FFD700, #FFA500); color:#3d2c00; }
-  .ins-09{ background:linear-gradient(135deg, #ffffff, #7f8c8d); color:#111; }
-  .ins-10{ background:linear-gradient(135deg, #a855f7, #ec4899); color:#fff; }
-
-  .avatar{
-    width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    font-family:'Baloo 2',sans-serif; font-size:20px; font-weight:700; color:#fff; flex-shrink:0;
-    border:3px solid var(--paper); box-shadow:0 0 0 2px var(--border); overflow:hidden; background-size:cover; background-position:center;
-  }
-  .avatar-sm{ width:38px; height:38px; font-size:15px; }
+  .avatar{ width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Baloo 2',sans-serif; font-size:20px; font-weight:700; color:#fff; flex-shrink:0; border:3px solid var(--paper); box-shadow:0 0 0 2px var(--border); overflow:hidden; background-size:cover; background-position:center; }
+  .avatar-sm{ width:40px; height:40px; font-size:16px; }
   .avatar-lg{ width:92px; height:92px; font-size:34px; margin:0 auto 12px; cursor:pointer; position:relative; box-shadow:0 6px 0 rgba(0,0,0,0.2), 0 0 0 3px var(--border); }
-  .avatar-lg::after{ content:'📷'; position:absolute; bottom:0; right:0; font-size:14px; background:var(--paper-card); padding:3px 6px; border-radius:50%; border:2px solid var(--border); }
 
   .stats-row{ display:flex; justify-content:center; gap:10px; margin:14px 0; }
   .stat-pill{ background:var(--paper-card); border:2px solid var(--border); border-radius:14px; padding:10px; font-weight:800; font-size:14px; text-align:center; flex:1; box-shadow:0 3px 0 rgba(0,0,0,0.2); }
   .stat-pill span{ display:block; font-size:11px; color:var(--ink-soft); font-weight:700; }
   label.field-label{ display:block; text-align:left; font-size:13px; font-weight:800; color:var(--ink-soft); margin-top:12px; }
 
-  /* Custom Modals (No window.prompt) */
-  .custom-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:300; backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity 0.2s; }
-  .custom-modal-overlay.active{ opacity:1; pointer-events:auto; }
-  .custom-modal{ background:var(--paper); border:2px solid var(--border); border-radius:20px; padding:24px; width:90%; max-width:400px; box-shadow:0 12px 35px rgba(0,0,0,0.5); transform:translateY(20px); transition:transform 0.2s; }
-  .custom-modal-overlay.active .custom-modal{ transform:translateY(0); }
-
   /* BOTTOM NAV */
   .bottom-nav{
     position:fixed; bottom:0; left:0; right:0; height:78px; background:var(--paper-card);
     border-top:2px solid var(--border); display:flex; justify-content:space-around; align-items:center;
-    z-index:100; padding:0 6px; box-shadow:0 -6px 15px rgba(0,0,0,0.35);
+    z-index:100; padding:0 6px; box-shadow:0 -6px 15px rgba(0,0,0,0.35); max-width:600px; margin:0 auto; left:0; right:0;
   }
   .nav-item{
     flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -117,58 +91,69 @@
   .nav-item span.nav-icon{ font-size:22px; margin-bottom:2px; }
   .nav-item.active{ color:var(--duo-green); }
 
-  .waiting-rooms-container{ max-height:280px; overflow-y:auto; margin:10px 0; display:flex; flex-direction:column; gap:8px; }
+  .waiting-rooms-container{ max-height:240px; overflow-y:auto; margin:10px 0; display:flex; flex-direction:column; gap:8px; }
   .waiting-room-card{ display:flex; align-items:center; justify-content:space-between; background:var(--paper-card); border:2px solid var(--border); padding:12px 16px; border-radius:14px; box-shadow:0 3px 0 var(--border); }
-  .friend-item{ display:flex; align-items:center; justify-content:space-between; background:var(--paper-card); border:2px solid var(--border); border-radius:14px; padding:12px 16px; margin-bottom:8px; box-shadow:0 3px 0 var(--border); cursor:pointer; }
-  .friends-list{ max-height:calc(100vh - 250px); overflow-y:auto; margin-top:10px; display:flex; flex-direction:column; gap:8px; }
-  .leaderboard-list{ max-height:calc(100vh - 220px); overflow-y:auto; margin:10px 0; display:flex; flex-direction:column; gap:8px; }
-  .leaderboard-item{ display:flex; align-items:center; justify-content:space-between; background:var(--paper-card); padding:12px 16px; border-radius:14px; font-weight:700; font-size:14px; border:2px solid var(--border); box-shadow:0 3px 0 var(--border); cursor:pointer; }
-  .leaderboard-item.top-1{ border-color:var(--duo-gold); background:rgba(255, 200, 0, 0.1); }
-  .rank-badge{ font-family:'Baloo 2'; font-size:15px; width:28px; color:var(--duo-green); font-weight:800; }
+  .friend-item, .shop-item, .leaderboard-item, .event-card{ display:flex; align-items:center; justify-content:space-between; background:var(--paper-card); border:2px solid var(--border); border-radius:14px; padding:12px 16px; margin-bottom:8px; box-shadow:0 3px 0 var(--border); }
+  .friends-list, .shop-list, .leaderboard-list{ max-height:calc(100vh - 250px); overflow-y:auto; margin-top:10px; display:flex; flex-direction:column; gap:8px; }
 
-  .store-grid{ display:flex; flex-direction:column; gap:10px; max-height:calc(100vh - 200px); overflow-y:auto; margin-top:10px; }
-  .store-card{ background:var(--paper-card); border:2px solid var(--border); border-radius:16px; padding:14px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 3px 0 var(--border); }
+  /* MODAL ESTILIZADO EM CSS */
+  .custom-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:500; display:flex; align-items:center; justify-content:center; backdrop-filter: blur(4px); }
+  .custom-modal{ background:var(--paper); border:2px solid var(--border); border-radius:20px; width:90%; max-width:420px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5); display:flex; flex-direction:column; }
+  
+  .board-preview-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin:12px 0; }
+  .board-preview-option{ background:var(--paper-card); border:2px solid var(--border); border-radius:14px; padding:10px; text-align:center; cursor:pointer; font-weight:700; font-size:13px; }
+  .board-preview-option.selected{ border-color:var(--duo-green); background:rgba(88,204,2,0.1); }
+  
+  .insignias-display-bar{ display:flex; gap:4px; justify-content:center; margin:10px 0; flex-wrap:wrap; }
+  .insignia-slot{ width:32px; height:32px; border-radius:8px; background:var(--paper-card); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative; font-size:14px; }
+  .insignia-slot.locked{ filter: grayscale(1); opacity: 0.4; }
+  .insignia-slot.locked::after{ content:'🔒'; font-size:12px; position:absolute; }
 </style>
 </head>
 <body>
 
 <!-- TELA 1: PARTIDAS -->
 <div id="partidas-screen" class="card">
-  <div class="brand">
-    <div class="brand-left"><span class="logo">⚔️</span><h2>Partidas</h2></div>
-    <div class="points-pill" id="header-points">🪙 0</div>
-  </div>
-  <p class="subtitle">Modo multiplayer em tempo real</p>
+  <div class="brand"><span class="logo">⚔️</span><h2>Partidas</h2></div>
+  <p class="subtitle">Escolha seu modo de jogo</p>
   
-  <div style="background:var(--paper-card); border:2px solid var(--border); border-radius:16px; padding:16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 0 var(--border);">
-    <div>
-      <h3 style="font-size:16px; margin-bottom:2px; color:var(--duo-gold);">Criar Sala Personalizada</h3>
-      <p style="font-size:12px; color:var(--ink-soft); margin:0; font-weight:600;">Gere um código e convide um amigo</p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+    <button id="mode-online-btn" class="btn-blue" style="margin:0;">Modo Online</button>
+    <button id="mode-bot-btn" class="btn-gray" style="margin:0; background:var(--paper-card); border:2px solid var(--border);">Jogar c/ Bot</button>
+  </div>
+  <button id="mode-local-btn" class="btn-gray" style="margin:0 0 12px 0; background:var(--paper-card); border:2px solid var(--border);">Pessoalmente (2 Jogadores)</button>
+
+  <div id="online-match-section">
+    <div class="event-card" style="cursor:pointer;" id="quick-create-btn">
+      <div>
+        <h3>Criar Nova Sala</h3>
+        <p style="color:var(--ink-soft); font-size:13px; margin:0; font-weight:600;">Gere um código e convide alguém</p>
+      </div>
+      <button class="btn-small" style="width:auto; margin:0;">Criar</button>
     </div>
-    <button class="btn-small" id="open-create-modal-btn" style="width:auto; margin:0;">Criar</button>
-  </div>
 
-  <label class="field-label">Entrar com código da sala</label>
-  <div style="display:flex; gap:8px;">
-    <input type="text" id="room-code-input" placeholder="EX: A1B2" style="text-transform:uppercase; margin:0;">
-    <button id="join-room-btn" class="btn-blue" style="width:110px; margin:0;">Entrar</button>
-  </div>
-  <p class="error" id="lobby-error"></p>
+    <label class="field-label">Entrar com código da sala</label>
+    <div style="display:flex; gap:8px;">
+      <input type="text" id="room-code-input" placeholder="EX: A1B2" style="text-transform:uppercase; margin:0;">
+      <button id="join-room-btn" class="btn-blue" style="width:110px; margin:0;">Entrar</button>
+    </div>
+    <p class="error" id="lobby-error"></p>
 
-  <hr>
-  <h3 style="font-size:15px; color:var(--duo-gold); margin-bottom:4px;">⏱️ Partidas em Espera</h3>
-  <div class="waiting-rooms-container" id="waiting-rooms-list">
-    <div style="text-align:center; color:var(--ink-soft); font-weight:700; padding:12px; font-size:13px;">Buscando partidas abertas...</div>
+    <hr>
+    <h3 style="font-size:15px; color:var(--duo-gold); margin-bottom:4px;">⏱️ Salas em Espera</h3>
+    <div class="waiting-rooms-container" id="waiting-rooms-list">
+      <div style="text-align:center; color:var(--ink-soft); font-weight:700; padding:12px; font-size:13px;">Buscando partidas abertas...</div>
+    </div>
   </div>
 </div>
 
 <!-- TELA 2: AMIGOS -->
 <div id="amigos-screen" class="card hidden">
-  <div class="brand"><div class="brand-left"><span class="logo">👥</span><h2>Meus Amigos</h2></div></div>
-  <p class="subtitle">Conecte-se com outros jogadores</p>
+  <div class="brand"><span class="logo">👥</span><h2>Meus Amigos</h2></div>
+  <p class="subtitle">Adicione amigos e jogue rapidamente</p>
 
   <div style="display:flex; gap:8px; margin-bottom:10px;">
-    <input type="text" id="add-friend-input" placeholder="Digite o @nick do amigo" style="margin:0;" autocomplete="off">
+    <input type="text" id="add-friend-input" placeholder="Nome do amigo" style="margin:0;">
     <button id="add-friend-btn" class="btn-blue" style="width:110px; margin:0;">Adicionar</button>
   </div>
   <p class="error" id="friend-error" style="margin:0;"></p>
@@ -179,23 +164,45 @@
   </div>
 </div>
 
-<!-- TELA 3: LOJA -->
+<!-- TELA 3: LOJA (VIP / ELITE) -->
 <div id="loja-screen" class="card hidden">
-  <div class="brand">
-    <div class="brand-left"><span class="logo">🛒</span><h2>Loja VIP & Elite</h2></div>
-    <div class="points-pill" id="loja-points">🪙 0</div>
+  <div class="brand"><span class="logo">🛒</span><h2>Loja Xadrez Pro</h2></div>
+  <p class="subtitle">Adquira cargos VIP e Elite com seus pontos</p>
+  <div style="text-align:center; font-weight:800; font-size:16px; margin-bottom:12px; color:var(--duo-gold);">
+    Seus Pontos: <span id="user-shop-points">0</span> 🪙
   </div>
-  <p class="subtitle">Adquira cargos exclusivos e insígnias lendárias</p>
-  
-  <div class="store-grid" id="store-items-list">
-    <!-- Gerado dinamicamente -->
+
+  <div class="shop-list">
+    <div class="shop-item">
+      <div>
+        <h3 style="color:var(--duo-gold); font-size:16px;">VIP (Nível 8)</h3>
+        <p style="color:var(--ink-soft); font-size:13px; margin:0;">Degradê amarelo animado no nick</p>
+      </div>
+      <button class="btn-small btn-gold buy-cargo-btn" data-cargo="vip" data-cost="1000">1000 🪙</button>
+    </div>
+    <div class="shop-item">
+      <div>
+        <h3 style="color:#fff; font-size:16px;">VIP+ (Nível 9)</h3>
+        <p style="color:var(--ink-soft); font-size:13px; margin:0;">Degradê branco, cinza e preto animado</p>
+      </div>
+      <button class="btn-small btn-blue buy-cargo-btn" data-cargo="vipplus" data-cost="2500">2500 🪙</button>
+    </div>
+    <div class="shop-item">
+      <div>
+        <h3 style="color:#CE82FF; font-size:16px;">Elite (Nível 10)</h3>
+        <p style="color:var(--ink-soft); font-size:13px; margin:0;">Degradê roxo animado supremo</p>
+      </div>
+      <button class="btn-small buy-cargo-btn" style="background:#9c27b0;" data-cargo="elite" data-cost="5000">5000 🪙</button>
+    </div>
   </div>
+  <p class="success" id="shop-success" style="text-align:center;"></p>
+  <p class="error" id="shop-error" style="text-align:center;"></p>
 </div>
 
 <!-- TELA 4: RANK -->
 <div id="rank-screen" class="card hidden">
-  <div class="brand"><div class="brand-left"><span class="logo">👑</span><h2>Rank Global</h2></div></div>
-  <p class="subtitle">Os melhores jogadores do Xadrez Pro</p>
+  <div class="brand"><span class="logo">👑</span><h2>Rank Global</h2></div>
+  <p class="subtitle">Os melhores jogadores ranqueados</p>
   <div class="leaderboard-list" id="leaderboard-list">
     <div style="text-align:center; color:var(--ink-soft); font-weight:700; padding:20px;">Carregando ranking...</div>
   </div>
@@ -203,72 +210,101 @@
 
 <!-- TELA 5: PERFIL -->
 <div id="perfil-screen" class="card hidden">
-  <div class="brand">
-    <div class="brand-left"><span class="logo">👤</span><h2>Meu Perfil</h2></div>
-    <button class="btn-small btn-gray" id="settings-toggle-btn" style="width:auto; margin:0;">⚙️ Config</button>
+  <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-bottom:10px;">
+    <span style="font-family:'Baloo 2'; font-weight:800; font-size:18px; color:var(--duo-green);">👤 Meu Perfil</span>
+    <button class="btn-small btn-gray" id="open-settings-modal-btn">Configurações</button>
   </div>
 
   <input type="file" id="avatar-file-input" accept="image/*" class="hidden">
   <div class="avatar avatar-lg" id="user-avatar" title="Clique para alterar foto">?</div>
-  <h2 style="text-align:center; margin-bottom:2px;"><span id="profile-display-name"></span><span id="profile-badge-container"></span></h2>
-  <p style="text-align:center; color:var(--duo-blue); font-size:14px; font-weight:800; margin-top:0;" id="profile-nick-sub"></p>
+  <h2 style="text-align:center; margin-bottom:2px;"><span id="profile-display-name"></span><span id="profile-owner-badge"></span></h2>
+  <p style="text-align:center; color:var(--ink-soft); font-size:13px; font-weight:700; margin-top:0;" id="profile-nick-sub"></p>
+
+  <div class="insignias-display-bar" id="profile-insignias-bar"></div>
 
   <div class="stats-row">
     <div class="stat-pill"><span id="stat-wins">0</span><span>Vitórias</span></div>
     <div class="stat-pill"><span id="stat-losses">0</span><span>Derrotas</span></div>
-    <div class="stat-pill"><span id="stat-draws">0</span><span>Empates</span></div>
-  </div>
-
-  <div class="stats-row">
-    <div class="stat-pill"><span id="stat-followers">0</span><span>Seguidores</span></div>
-    <div class="stat-pill"><span id="stat-following">0</span><span>Seguindo</span></div>
+    <div class="stat-pill"><span id="stat-points">0</span><span>Pontos</span></div>
   </div>
 
   <div style="background:var(--paper-card); border:2px solid var(--border); border-radius:16px; padding:14px; margin-top:10px;">
-    <label class="field-label" style="margin-top:0;">Sua Insígnia Atual</label>
-    <select id="insignia-selector"></select>
-
-    <label class="field-label">Tema visual do tabuleiro</label>
-    <select id="theme-selector">
-      <option value="theme-wood">Madeira clássica</option>
-      <option value="theme-emerald">Verde esmeralda</option>
-      <option value="theme-ocean">Azul oceano</option>
-      <option value="theme-dark">Modo escuro</option>
-    </select>
+    <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800; margin-bottom:6px;">
+      <span>Taxa de Vitória</span>
+      <span id="win-rate-val" style="color:var(--duo-green);">0%</span>
+    </div>
+    <button id="open-board-selector-btn" class="btn-blue" style="margin-top:10px; width:100%;">Escolher Tema do Tabuleiro</button>
+    <div id="admin-panel-btn-container" class="hidden" style="margin-top:10px;">
+      <button id="open-admin-modal-btn" class="btn-gold" style="width:100%;">Painel Administrativo (Dono)</button>
+    </div>
   </div>
 
   <button id="logout-btn" class="btn-red" style="margin-top:16px;">Sair da conta</button>
 </div>
 
-<!-- MODAL PERFIL DE OUTRO JOGADOR (CSS MODAL) -->
-<div class="custom-modal-overlay" id="user-profile-modal">
-  <div class="custom-modal" style="text-align:center;">
-    <div class="avatar avatar-lg" id="modal-user-avatar" style="margin:0 auto 8px;">?</div>
-    <h2 id="modal-user-name" style="margin-bottom:2px;">Nome</h2>
-    <p id="modal-user-nick" style="color:var(--duo-blue); font-size:13px; font-weight:800; margin-top:0;"></p>
-    <div style="display:flex; justify-content:center; gap:8px; margin:12px 0;">
-      <div class="stat-pill"><span id="modal-user-wins">0</span><span>Vitórias</span></div>
-      <div class="stat-pill"><span id="modal-user-followers">0</span><span>Seguidores</span></div>
+<!-- MODAL: ESCOLHER TABULEIRO (SUBSTITUI WINDOW.PROMPT) -->
+<div class="custom-modal-overlay hidden" id="board-modal-overlay">
+  <div class="custom-modal">
+    <h3>Escolher Tabuleiro</h3>
+    <p style="color:var(--ink-soft); font-size:13px; margin:0 0 10px 0;">Selecione o visual do tabuleiro:</p>
+    <div class="board-preview-grid">
+      <div class="board-preview-option" data-theme="theme-wood">Madeira Clássica</div>
+      <div class="board-preview-option" data-theme="theme-emerald">Verde Esmeralda</div>
+      <div class="board-preview-option" data-theme="theme-ocean">Azul Oceano</div>
+      <div class="board-preview-option" data-theme="theme-dark">Modo Escuro</div>
     </div>
-    <button id="modal-follow-btn" class="btn-blue" style="margin-top:8px;">Seguir</button>
-    <button id="modal-close-btn" class="btn-gray" style="margin-top:4px;">Fechar</button>
+    <button id="close-board-modal" class="btn-small btn-blue" style="width:100%; margin-top:10px;">Salvar & Fechar</button>
   </div>
 </div>
 
-<!-- MODAL CONFIGURAÇÕES / NOME / SENHA (CSS MODAL) -->
-<div class="custom-modal-overlay" id="settings-modal">
-  <div class="custom-modal">
-    <h3>⚙️ Configurações</h3>
-    <label class="field-label">Alterar Nome de Exibição</label>
-    <input type="text" id="edit-name-input" placeholder="Novo nome">
-    <button id="save-name-btn" class="btn-small btn-blue" style="width:100%; margin-top:4px;">Salvar Nome</button>
-    <p class="success" id="config-succ" style="margin:4px 0;"></p>
-    <button id="close-settings-btn" class="btn-gray" style="margin-top:12px; width:100%;">Fechar</button>
+<!-- MODAL: PERFIL DE OUTRO JOGADOR -->
+<div class="custom-modal-overlay hidden" id="player-profile-modal">
+  <div class="custom-modal" style="text-align:center;">
+    <div class="avatar avatar-lg" id="modal-player-avatar" style="margin:0 auto 10px;">?</div>
+    <h3 id="modal-player-name" style="margin-bottom:2px;">Nome</h3>
+    <p id="modal-player-nick" style="color:var(--ink-soft); font-size:13px; margin-top:0;"></p>
+    <div class="stats-row">
+      <div class="stat-pill"><span id="modal-player-wins">0</span><span>Vitórias</span></div>
+      <div class="stat-pill"><span id="modal-player-followers">0</span><span>Seguidores</span></div>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button id="follow-player-btn" class="btn-blue" style="margin:0; flex:1;">Seguir</button>
+      <button id="close-player-modal" class="btn-gray" style="margin:0; flex:1;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PAINEL ADMIN (DONO) -->
+<div class="custom-modal-overlay hidden" id="admin-modal">
+  <div class="custom-modal" style="max-width:500px; max-height:85vh; overflow-y:auto;">
+    <h3>Painel do Dono / Admin</h3>
+    <p style="color:var(--ink-soft); font-size:13px; margin:0 0 10px 0;">Gerenciamento completo do servidor</p>
+    
+    <label class="field-label">Pesquisar Usuário</label>
+    <input type="text" id="admin-search-input" placeholder="Digite o nick ou nome">
+    <button id="admin-search-btn" class="btn-small btn-blue" style="width:100%; margin-bottom:10px;">Buscar</button>
+    
+    <div id="admin-user-result" style="background:var(--paper-card); padding:10px; border-radius:12px; border:2px solid var(--border); margin-bottom:10px;" class="hidden">
+      <div id="admin-result-info" style="font-weight:700; margin-bottom:8px;"></div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <button class="btn-small btn-gold" id="admin-give-vip">Dar VIP</button>
+        <button class="btn-small btn-blue" id="admin-give-elite">Dar Elite</button>
+        <button class="btn-small" style="background:#9c27b0;" id="admin-give-insignia">Dar Insignia 10</button>
+        <button class="btn-small btn-gray" id="admin-view-chats">Ver Chats</button>
+      </div>
+    </div>
+
+    <label class="field-label">Criar Evento Dinâmico</label>
+    <input type="text" id="event-title-input" placeholder="Título do Evento">
+    <input type="text" id="event-desc-input" placeholder="Descrição">
+    <button id="admin-create-event-btn" class="btn-small btn-green" style="width:100%;">Publicar Evento</button>
+
+    <button id="close-admin-modal" class="btn-small btn-gray" style="width:100%; margin-top:14px;">Fechar Painel</button>
   </div>
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="bottom-nav">
+<nav class="bottom-nav" id="bottom-nav">
   <button class="nav-item active" data-target="partidas"><span class="nav-icon">⚔️</span>Partidas</button>
   <button class="nav-item" data-target="amigos"><span class="nav-icon">👥</span>Amigos</button>
   <button class="nav-item" data-target="loja"><span class="nav-icon">🛒</span>Loja</button>
@@ -279,7 +315,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, query, collection, orderBy, limit, getDocs, arrayUnion, arrayRemove, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, query, collection, orderBy, limit, getDocs, arrayUnion, arrayRemove, where, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCtXluQl2mtkehl9FICeJBPbP-_A3YRhzk",
@@ -295,28 +331,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let currentUsername = "";
+let currentUserNick = "";
 let currentUid = null;
+let currentAvatarData = "";
 let currentUserData = null;
 let unsubscribeWaitingRooms = null;
-
-const INSIGNIAS_DEF = {
-  '01': { name: 'Prata', winsReq: 0, badge: '🥈', type: 'rank' },
-  '02': { name: 'Ouro', winsReq: 5, badge: '🥇', type: 'rank' },
-  '03': { name: 'Diamante', winsReq: 15, badge: '💎', type: 'rank' },
-  '04': { name: 'Esmeralda', winsReq: 30, badge: '🟩', type: 'rank', colorClass: 'name-ins-04' },
-  '05': { name: 'Lápis-lazúli', winsReq: 50, badge: '🔷', type: 'rank', colorClass: 'name-ins-05' },
-  '06': { name: 'Ametista', winsReq: 80, badge: '💜', type: 'rank', colorClass: 'name-ins-06' },
-  '07': { name: 'Rubi', winsReq: 120, badge: '🔴', type: 'rank', colorClass: 'name-ins-07' },
-  '08': { name: 'VIP', price: 500, badge: '⭐', type: 'vip', colorClass: 'name-ins-08' },
-  '09': { name: 'VIP+', price: 1000, badge: '🌟', type: 'vip', colorClass: 'name-ins-09' },
-  '10': { name: 'Elite', price: 2500, badge: '👑', type: 'vip', colorClass: 'name-ins-10' }
-};
-
-window.formatNameWithInsignia = function(name, insKey){
-  const ins = INSIGNIAS_DEF[insKey] || INSIGNIAS_DEF['01'];
-  let cls = ins.colorClass || '';
-  return `<span class="${cls}">${name}</span><span class="ins-badge ins-${insKey}" title="${ins.name}">${ins.badge}</span>`;
-};
+let selectedTargetUid = null;
 
 const AVATAR_COLORS = ['#FF9600','#1CB0F6','#CE82FF','#58CC02','#FF4B4B','#FFC800','#2B70C9'];
 function avatarColorFor(name){
@@ -324,7 +345,7 @@ function avatarColorFor(name){
   return AVATAR_COLORS[h % AVATAR_COLORS.length];
 }
 
-function renderAvatar(el, name, avatarData){
+function renderAvatarElement(el, name, avatarData){
   el.style.backgroundImage = ''; el.innerText = '';
   if(!avatarData){
     el.innerText = name ? name[0].toUpperCase() : '?';
@@ -336,7 +357,22 @@ function renderAvatar(el, name, avatarData){
   }
 }
 
-/* Navegação */
+function getStyledNameHTML(name, insignia, isVip, isElite){
+  if(name && name.toUpperCase() === 'DONO') return `<span class="animated-name">${name} <span class="owner-emblem">DONO</span></span>`;
+  if(isElite) return `<span class="elite-name">${name}</span>`;
+  if(isVip === 'vipplus') return `<span class="vip-plus-name">${name}</span>`;
+  if(isVip === true || isVip === 'vip') return `<span class="vip-name">${name}</span>`;
+  if(insignia === 4) return `<span class="emerald-name">${name}</span>`;
+  if(insignia === 5) return `<span class="lapis-name">${name}</span>`;
+  if(insignia === 6) return `<span class="amethyst-name">${name}</span>`;
+  if(insignia === 7) return `<span class="ruby-name">${name}</span>`;
+  if(insignia === 8) return `<span class="vip-name">${name}</span>`;
+  if(insignia === 9) return `<span class="vip-plus-name">${name}</span>`;
+  if(insignia === 10) return `<span class="elite-name">${name}</span>`;
+  return `<span>${name}</span>`;
+}
+
+/* Abas */
 const screens = {
   partidas: document.getElementById('partidas-screen'),
   amigos: document.getElementById('amigos-screen'),
@@ -355,7 +391,6 @@ function showScreen(name){
   if(name === 'rank') loadLeaderboard();
   if(name === 'partidas') startListeningWaitingRooms();
   if(name === 'amigos') loadFriends();
-  if(name === 'loja') loadStore();
 }
 
 document.querySelectorAll('.nav-item').forEach(btn => {
@@ -368,47 +403,44 @@ onAuthStateChanged(auth, async (user) => {
   const userSnap = await getDoc(doc(db,'users',user.uid));
   if(userSnap.exists()){
     currentUserData = userSnap.data();
-    updateProfileUI();
+    currentUsername = currentUserData.displayName || 'Jogador';
+    currentUserNick = currentUserData.nick || '@player';
+    currentAvatarData = currentUserData.avatar || '';
+    
+    document.getElementById('stat-wins').innerText = currentUserData.wins || 0;
+    document.getElementById('stat-losses').innerText = currentUserData.losses || 0;
+    document.getElementById('stat-points').innerText = currentUserData.points || 0;
+    document.getElementById('user-shop-points').innerText = currentUserData.points || 0;
+    
+    const total = (currentUserData.wins||0) + (currentUserData.losses||0) + (currentUserData.draws||0);
+    document.getElementById('win-rate-val').innerText = (total > 0 ? Math.round(((currentUserData.wins||0)/total)*100) : 0) + '%';
+    
+    if(currentUserData.role === 'admin' || currentUsername.toUpperCase() === 'DONO'){
+      document.getElementById('admin-panel-btn-container').classList.remove('hidden');
+    }
   }
+
+  const nameEl = document.getElementById('profile-display-name');
+  nameEl.innerHTML = getStyledNameHTML(currentUsername, currentUserData?.insignia, currentUserData?.isVip, currentUserData?.isElite);
+  if(currentUsername.toUpperCase() === 'DONO'){
+    document.getElementById('profile-owner-badge').innerHTML = `<span class="owner-emblem">DONO</span>`;
+  }
+  document.getElementById('profile-nick-sub').innerText = currentUserNick;
+  renderAvatarElement(document.getElementById('user-avatar'), currentUsername, currentAvatarData);
+  renderInsigniasBar(currentUserData?.insignia || 1);
   startListeningWaitingRooms();
 });
 
-function updateProfileUI(){
-  const d = currentUserData;
-  document.getElementById('stat-wins').innerText = d.wins || 0;
-  document.getElementById('stat-losses').innerText = d.losses || 0;
-  document.getElementById('stat-draws').innerText = d.draws || 0;
-  document.getElementById('stat-followers').innerText = (d.followers || []).length;
-  document.getElementById('stat-following').innerText = (d.following || []).length;
-  document.getElementById('header-points').innerText = `🪙 ${d.points || 0}`;
-  document.getElementById('loja-points').innerText = `🪙 ${d.points || 0}`;
-
-  document.getElementById('profile-display-name').innerText = d.displayName || '';
-  document.getElementById('profile-nick-sub').innerText = d.nick || '';
-  document.getElementById('profile-badge-container').innerHTML = `<span class="ins-badge ins-${d.insignia||'01'}">${INSIGNIAS_DEF[d.insignia||'01'].badge}</span>`;
-  renderAvatar(document.getElementById('user-avatar'), d.displayName, d.avatar);
-
-  // Popular seletor de insígnias desbloqueadas
-  const wins = d.wins || 0;
-  let unlocked = ['01','02','03','04','05','06','07'].filter(k => wins >= INSIGNIAS_DEF[k].winsReq);
-  if(d.vips) unlocked = [...unlocked, ...d.vips];
-  currentUserData.unlockedIns = unlocked;
-
-  const insSelect = document.getElementById('insignia-selector');
-  insSelect.innerHTML = unlocked.map(k => `<option value="${k}" ${d.insignia===k?'selected':''}>${INSIGNIAS_DEF[k].name} (${INSIGNIAS_DEF[k].badge})</option>`).join('');
+function renderInsigniasBar(currentLevel){
+  const bar = document.getElementById('profile-insignias-bar');
+  let html = '';
+  for(let i=1; i<=10; i++){
+    const isUnlocked = i <= currentLevel;
+    const imgName = i===1?'insi01.png':i===2?'insi02.png':`insi0${i}.png`;
+    html += `<div class="insignia-slot ${isUnlocked?'':'locked'}" title="Insignia ${i}"><span style="font-size:10px; font-weight:800;">${i}</span></div>`;
+  }
+  bar.innerHTML = html;
 }
-
-document.getElementById('insignia-selector').addEventListener('change', async (e) => {
-  const newIns = e.target.value;
-  currentUserData.insignia = newIns;
-  await updateDoc(doc(db, 'users', currentUid), { insignia: newIns });
-  updateProfileUI();
-});
-
-document.getElementById('theme-selector').addEventListener('change', async (e) => {
-  const theme = e.target.value;
-  await updateDoc(doc(db, 'users', currentUid), { theme });
-});
 
 document.getElementById('logout-btn').addEventListener('click', () => signOut(auth).then(() => window.location.href = "login.html"));
 
@@ -421,15 +453,42 @@ avatarFileInput.addEventListener('change', (e) => {
   if(!file) return;
   const reader = new FileReader();
   reader.onload = async (event) => {
-    const avatarData = event.target.result;
-    currentUserData.avatar = avatarData;
-    renderAvatar(userAvatar, currentUserData.displayName, avatarData);
-    await updateDoc(doc(db,'users',currentUid), { avatar: avatarData });
+    currentAvatarData = event.target.result;
+    renderAvatarElement(userAvatar, currentUsername, currentAvatarData);
+    await updateDoc(doc(db,'users',currentUid), { avatar: currentAvatarData });
+    alert('Foto atualizada!');
   };
   reader.readAsDataURL(file);
 });
 
-/* Salas e Partidas */
+/* Modals CSS Reais */
+const boardModal = document.getElementById('board-modal-overlay');
+document.getElementById('open-board-selector-btn').addEventListener('click', () => boardModal.classList.remove('hidden'));
+document.getElementById('close-board-modal').addEventListener('click', () => boardModal.classList.add('hidden'));
+
+document.querySelectorAll('.board-preview-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.board-preview-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    localStorage.setItem('xadrez_board_theme', opt.getAttribute('data-theme'));
+  });
+});
+
+/* Modos de Jogo */
+document.getElementById('mode-online-btn').addEventListener('click', () => {
+  document.getElementById('mode-online-btn').className = "btn-blue";
+  document.getElementById('mode-bot-btn').className = "btn-gray";
+  document.getElementById('mode-local-btn').className = "btn-gray";
+  document.getElementById('online-match-section').classList.remove('hidden');
+});
+document.getElementById('mode-bot-btn').addEventListener('click', () => {
+  window.location.href = `partidas.html?mode=bot`;
+});
+document.getElementById('mode-local-btn').addEventListener('click', () => {
+  window.location.href = `partidas.html?mode=local`;
+});
+
+/* Salas Online */
 function startListeningWaitingRooms(){
   if(unsubscribeWaitingRooms) unsubscribeWaitingRooms();
   const q = query(collection(db, 'rooms'), where('status', '==', 'waiting'));
@@ -443,14 +502,14 @@ function startListeningWaitingRooms(){
     snapshot.forEach((docSnap) => {
       const code = docSnap.id;
       const data = docSnap.data();
+      const hostName = data.players?.white?.name || 'Anônimo';
       if(data.players?.white?.uid === currentUid) return;
-      const host = data.players?.white;
       html += `
         <div class="waiting-room-card">
           <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:20px;">⚔️</span>
             <div>
-              <div style="font-family:'Baloo 2'; font-weight:700; font-size:15px;">Sala de ${window.formatNameWithInsignia(host.name, host.insignia||'01')}</div>
+              <div style="font-family:'Baloo 2'; font-weight:700; font-size:15px;">Sala de ${hostName}</div>
               <div style="font-size:11px; color:var(--ink-soft);">Código: ${code}</div>
             </div>
           </div>
@@ -464,10 +523,10 @@ function startListeningWaitingRooms(){
   });
 }
 
-document.getElementById('open-create-modal-btn').addEventListener('click', async () => {
+async function createRoom(){
   const roomCode = Math.random().toString(36).substring(2,6).toUpperCase();
   await setDoc(doc(db,'rooms',roomCode), {
-    players: { white: { name: currentUserData.displayName, nick: currentUserData.nick, uid: currentUid, avatar: currentUserData.avatar||'', insignia: currentUserData.insignia||'01' }, black: null },
+    players: { white: { name: currentUsername, uid: currentUid, avatar: currentAvatarData, insignia: currentUserData?.insignia||1, isVip: currentUserData?.isVip||false, isElite: currentUserData?.isElite||false }, black: null },
     turn: 'white', status: 'waiting',
     board: ['b_rook','b_knight','b_bishop','b_queen','b_king','b_bishop','b_knight','b_rook',
             'b_pawn','b_pawn','b_pawn','b_pawn','b_pawn','b_pawn','b_pawn','b_pawn',
@@ -475,11 +534,10 @@ document.getElementById('open-create-modal-btn').addEventListener('click', async
             null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
             'w_pawn','w_pawn','w_pawn','w_pawn','w_pawn','w_pawn','w_pawn','w_pawn',
             'w_rook','w_knight','w_bishop','w_queen','w_king','w_bishop','w_knight','w_rook'],
-    castling: { wK:true, wQ:true, bK:true, bQ:true },
-    enPassant: null, captured: { w: [], b: [] }, moveHistory: [], lastMove: null, messages: [], lastReaction: null
+    captured: { w: [], b: [] }, moveHistory: [], lastMove: null, messages: [], lastReaction: null
   });
   window.location.href = `partidas.html?room=${roomCode}`;
-});
+}
 
 async function joinRoom(code){
   const roomRef = doc(db,'rooms',code);
@@ -487,172 +545,179 @@ async function joinRoom(code){
   if(!snap.exists()){ document.getElementById('lobby-error').innerText = "Sala não encontrada!"; return; }
   const data = snap.data();
   if(!data.players.black && data.players.white.uid !== currentUid){
-    await updateDoc(roomRef, {
-      "players.black": { name: currentUserData.displayName, nick: currentUserData.nick, uid: currentUid, avatar: currentUserData.avatar||'', insignia: currentUserData.insignia||'01' },
-      status:'playing'
+    await updateDoc(roomRef, { 
+      "players.black": { name: currentUsername, uid: currentUid, avatar: currentAvatarData, insignia: currentUserData?.insignia||1, isVip: currentUserData?.isVip||false, isElite: currentUserData?.isElite||false }, 
+      status:'playing' 
     });
   }
   window.location.href = `partidas.html?room=${code}`;
 }
 
+document.getElementById('quick-create-btn').addEventListener('click', createRoom);
 document.getElementById('join-room-btn').addEventListener('click', () => {
   const code = document.getElementById('room-code-input').value.trim().toUpperCase();
   if(code) joinRoom(code);
 });
 
-/* Loja */
-function loadStore(){
-  const grid = document.getElementById('store-items-list');
-  const vipItems = ['08', '09', '10'];
-  let html = '';
-  vipItems.forEach(k => {
-    const item = INSIGNIAS_DEF[k];
-    const isOwned = (currentUserData.vips || []).includes(k);
-    html += `
-      <div class="store-card">
-        <div>
-          <h3 style="font-size:16px; margin-bottom:2px;">${item.badge} Cargo ${item.name}</h3>
-          <p style="font-size:12px; color:var(--ink-soft); margin:0; font-weight:600;">Desbloqueia insígnia exclusiva e nome com gradiente animado!</p>
-        </div>
-        <button class="btn-small ${isOwned?'btn-gray':'btn-gold'} buy-vip-btn" data-key="${k}" ${isOwned?'disabled':''}>${isOwned ? 'Adquirido' : '🪙 ' + item.price}</button>
-      </div>`;
+/* Loja de VIP e Elite */
+document.querySelectorAll('.buy-cargo-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const cargo = btn.getAttribute('data-cargo');
+    const cost = parseInt(btn.getAttribute('data-cost'));
+    const pts = currentUserData?.points || 0;
+    const err = document.getElementById('shop-error');
+    const succ = document.getElementById('shop-success');
+    err.innerText = ""; succ.innerText = "";
+
+    if(pts < cost){ err.innerText = "Você não tem pontos suficientes!"; return; }
+
+    const newPts = pts - cost;
+    let updateObj = { points: newPts };
+    if(cargo === 'vip') updateObj.isVip = true;
+    if(cargo === 'vipplus') updateObj.isVip = 'vipplus';
+    if(cargo === 'elite'){ updateObj.isElite = true; updateObj.insignia = 10; }
+
+    await updateDoc(doc(db, 'users', currentUid), updateObj);
+    currentUserData.points = newPts;
+    document.getElementById('user-shop-points').innerText = newPts;
+    succ.innerText = "Cargo adquirido com sucesso!";
   });
-  grid.innerHTML = html;
-  document.querySelectorAll('.buy-vip-btn').forEach(btn => {
-    if(!btn.disabled){
-      btn.addEventListener('click', () => buyVipItem(btn.getAttribute('data-key')));
-    }
-  });
-}
+});
 
-async function buyVipItem(key){
-  const item = INSIGNIAS_DEF[key];
-  if((currentUserData.points || 0) < item.price){
-    alert("Você não tem pontos suficientes! Jogue e vença partidas para ganhar pontos.");
-    return;
-  }
-  const newPoints = currentUserData.points - item.price;
-  const newVips = [...(currentUserData.vips || []), key];
-  currentUserData.points = newPoints;
-  currentUserData.vips = newVips;
-
-  await updateDoc(doc(db, 'users', currentUid), { points: newPoints, vips: newVips });
-  updateProfileUI();
-  loadStore();
-  alert(`Parabéns! Você adquiriu o cargo ${item.name}!`);
-}
-
-/* Amigos */
+/* Amigos & Perfil em Rank */
 async function loadFriends(){
   const container = document.getElementById('friends-list-container');
   const snap = await getDoc(doc(db, 'users', currentUid));
   if(!snap.exists()) return;
   const friends = snap.data().friends || [];
-  if(friends.length === 0){ container.innerHTML = `<div style="text-align:center; color:var(--ink-soft); padding:20px;">Nenhum amigo adicionado.</div>`; return; }
+  if(friends.length === 0){ container.innerHTML = `<div style="text-align:center; color:var(--ink-soft); padding:20px;">Nenhum amigo.</div>`; return; }
   container.innerHTML = friends.map(f => `
-    <div class="friend-item" onclick="openUserProfile('${f.uid}')">
+    <div class="friend-item">
       <div style="display:flex; align-items:center; gap:10px;">
-        <div class="avatar avatar-sm" style="${f.avatar?`background-image:url('${f.avatar}');`:''}">${f.avatar?'':f.name[0]}</div>
-        <span style="font-weight:700;">${window.formatNameWithInsignia(f.name, f.insignia||'01')}</span>
+        <div class="avatar avatar-sm" style="background:${avatarColorFor(f.name)};">${f.avatar ? `<img src="${f.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : f.name[0]}</div>
+        <span>${f.name}</span>
       </div>
-      <button class="btn-small btn-blue" onclick="event.stopPropagation(); createRoomWithFriend('${f.name}')">Desafiar</button>
+      <button class="btn-small btn-blue challenge-btn" data-name="${f.name}">Desafiar</button>
     </div>`).join('');
+  document.querySelectorAll('.challenge-btn').forEach(b => b.addEventListener('click', createRoom));
 }
 
 document.getElementById('add-friend-btn').addEventListener('click', async () => {
-  const nick = document.getElementById('add-friend-input').value.trim().toLowerCase();
+  const name = document.getElementById('add-friend-input').value.trim();
   const err = document.getElementById('friend-error'); const succ = document.getElementById('friend-success');
   err.innerText=""; succ.innerText="";
-  const formattedNick = nick.startsWith('@') ? nick : '@' + nick;
-  const q = query(collection(db, 'users'), where('nick', '==', formattedNick));
+  const q = query(collection(db, 'users'), where('displayName', '==', name));
   const res = await getDocs(q);
   if(res.empty){ err.innerText="Usuário não encontrado."; return; }
   const fDoc = res.docs[0];
-  if(fDoc.id === currentUid){ err.innerText="Você não pode se adicionar."; return; }
-  await updateDoc(doc(db, 'users', currentUid), {
-    friends: arrayUnion({ uid: fDoc.id, name: fDoc.data().displayName, avatar: fDoc.data().avatar||'', insignia: fDoc.data().insignia||'01' })
-  });
+  await updateDoc(doc(db, 'users', currentUid), { friends: arrayUnion({ uid: fDoc.id, name: fDoc.data().displayName, avatar: fDoc.data().avatar||'' }) });
   succ.innerText="Amigo adicionado!"; loadFriends();
 });
 
-window.createRoomWithFriend = async function(name){
-  // Atalho para criar sala
-  document.getElementById('open-create-modal-btn').click();
-};
-
-/* Rank / Leaderboard */
 async function loadLeaderboard(){
   const list = document.getElementById('leaderboard-list');
   const q = query(collection(db, 'users'), orderBy('wins', 'desc'), limit(15));
   const snap = await getDocs(q);
   let html = ''; let rank = 1;
   snap.forEach(d => {
-    const data = d.data();
-    const uid = d.id;
+    const data = d.data(); const name = data.displayName || 'Jogador';
     html += `
-      <div class="leaderboard-item ${rank===1?'top-1':''}" onclick="openUserProfile('${uid}')">
+      <div class="leaderboard-item ${rank===1?'top-1':''}" style="cursor:pointer;" data-uid="${d.id}">
         <div style="display:flex; align-items:center; gap:12px;">
-          <span class="rank-badge">#${rank}</span>
-          <div class="avatar avatar-sm" style="${data.avatar?`background-image:url('${data.avatar}');background-size:cover;`:``}">${data.avatar?'':data.displayName[0]}</div>
-          <span>${window.formatNameWithInsignia(data.displayName||'Jogador', data.insignia||'01')}</span>
+          <span style="font-family:'Baloo 2'; font-size:16px; width:24px; color:var(--duo-green); font-weight:800;">#${rank}</span>
+          <div class="avatar avatar-sm" style="${data.avatar?`background-image:url('${data.avatar}');background-size:cover;`:``}">${data.avatar?'':name[0]}</div>
+          <span>${name}</span>
         </div>
         <div style="font-size:13px; color:var(--ink-soft);"><strong style="color:var(--duo-green);">${data.wins||0}</strong> vitórias</div>
       </div>`;
     rank++;
   });
   list.innerHTML = html;
+  
+  document.querySelectorAll('.leaderboard-item').forEach(item => {
+    item.addEventListener('click', () => openPlayerProfile(item.getAttribute('data-uid')));
+  });
 }
 
-/* Modal Perfil de Jogador */
-window.openUserProfile = async function(uid){
+async function openPlayerProfile(uid){
   const snap = await getDoc(doc(db, 'users', uid));
   if(!snap.exists()) return;
   const data = snap.data();
-  document.getElementById('modal-user-name').innerText = data.displayName;
-  document.getElementById('modal-user-nick').innerText = data.nick;
-  document.getElementById('modal-user-wins').innerText = data.wins || 0;
-  document.getElementById('modal-user-followers').innerText = (data.followers || []).length;
-  renderAvatar(document.getElementById('modal-user-avatar'), data.displayName, data.avatar);
-
+  selectedTargetUid = uid;
+  document.getElementById('modal-player-name').innerText = data.displayName;
+  document.getElementById('modal-player-nick').innerText = data.nick || '@user';
+  document.getElementById('modal-player-wins').innerText = data.wins || 0;
+  document.getElementById('modal-player-followers').innerText = (data.followers || []).length;
+  renderAvatarElement(document.getElementById('modal-player-avatar'), data.displayName, data.avatar);
+  
   const isFollowing = (data.followers || []).includes(currentUid);
-  const followBtn = document.getElementById('modal-follow-btn');
-  followBtn.innerText = isFollowing ? "Deixar de Seguir" : "Seguir";
-  followBtn.className = isFollowing ? "btn-red" : "btn-blue";
-  followBtn.onclick = async () => {
-    if(isFollowing){
-      await updateDoc(doc(db, 'users', uid), { followers: arrayRemove(currentUid) });
-      await updateDoc(doc(db, 'users', currentUid), { following: arrayRemove(uid) });
-    } else {
-      await updateDoc(doc(db, 'users', uid), { followers: arrayUnion(currentUid) });
-      await updateDoc(doc(db, 'users', currentUid), { following: arrayUnion(uid) });
-    }
-    openUserProfile(uid);
-  };
+  const followBtn = document.getElementById('follow-player-btn');
+  followBtn.innerText = isFollowing ? "Seguindo" : "Seguir";
+  followBtn.className = isFollowing ? "btn-gray" : "btn-blue";
+  
+  document.getElementById('player-profile-modal').classList.remove('hidden');
+}
 
-  document.getElementById('user-profile-modal').classList.add('active');
-};
-
-document.getElementById('modal-close-btn').addEventListener('click', () => {
-  document.getElementById('user-profile-modal').classList.remove('active');
+document.getElementById('close-player-modal').addEventListener('click', () => document.getElementById('player-profile-modal').classList.add('hidden'));
+document.getElementById('follow-player-btn').addEventListener('click', async () => {
+  if(!selectedTargetUid) return;
+  const targetRef = doc(db, 'users', selectedTargetUid);
+  const snap = await getDoc(targetRef);
+  const data = snap.data();
+  const followers = data.followers || [];
+  if(followers.includes(currentUid)){
+    await updateDoc(targetRef, { followers: arrayRemove(currentUid) });
+    document.getElementById('follow-player-btn').innerText = "Seguir";
+    document.getElementById('follow-player-btn').className = "btn-blue";
+  } else {
+    await updateDoc(targetRef, { followers: arrayUnion(currentUid) });
+    document.getElementById('follow-player-btn').innerText = "Seguindo";
+    document.getElementById('follow-player-btn').className = "btn-gray";
+  }
 });
 
-/* Configurações Modal */
-const settingsModal = document.getElementById('settings-modal');
-document.getElementById('settings-toggle-btn').addEventListener('click', () => {
-  document.getElementById('edit-name-input').value = currentUserData.displayName || '';
-  settingsModal.classList.add('active');
-});
-document.getElementById('close-settings-btn').addEventListener('click', () => settingsModal.classList.remove('active'));
+/* Painel Admin & Dono */
+const adminModal = document.getElementById('admin-modal');
+document.getElementById('open-admin-modal-btn').addEventListener('click', () => adminModal.classList.remove('hidden'));
+document.getElementById('close-admin-modal').addEventListener('click', () => adminModal.classList.add('hidden'));
 
-document.getElementById('save-name-btn').addEventListener('click', async () => {
-  const newName = document.getElementById('edit-name-input').value.trim();
-  if(!newName) return;
-  currentUserData.displayName = newName;
-  await updateDoc(doc(db, 'users', currentUid), { displayName: newName });
-  updateProfileUI();
-  document.getElementById('config-succ').innerText = "Nome atualizado!";
-  setTimeout(() => { document.getElementById('config-succ').innerText = ""; settingsModal.classList.remove('active'); }, 1200);
+let searchedUserId = null;
+document.getElementById('admin-search-btn').addEventListener('click', async () => {
+  const queryText = document.getElementById('admin-search-input').value.trim();
+  const q = query(collection(db, 'users'), where('displayName', '==', queryText));
+  const res = await getDocs(q);
+  const resBox = document.getElementById('admin-user-result');
+  if(res.empty){ resBox.classList.add('hidden'); alert('Usuário não encontrado'); return; }
+  const docSnap = res.docs[0];
+  searchedUserId = docSnap.id;
+  const d = docSnap.data();
+  document.getElementById('admin-result-info').innerText = `Encontrado: ${d.displayName} (${d.nick}) - Pontos: ${d.points||0}`;
+  resBox.classList.remove('hidden');
+});
+
+document.getElementById('admin-give-vip').addEventListener('click', async () => {
+  if(!searchedUserId) return;
+  await updateDoc(doc(db, 'users', searchedUserId), { isVip: true });
+  alert('VIP concedido!');
+});
+document.getElementById('admin-give-elite').addEventListener('click', async () => {
+  if(!searchedUserId) return;
+  await updateDoc(doc(db, 'users', searchedUserId), { isElite: true, insignia: 10 });
+  alert('Elite e Insignia 10 concedidas!');
+});
+document.getElementById('admin-give-insignia').addEventListener('click', async () => {
+  if(!searchedUserId) return;
+  await updateDoc(doc(db, 'users', searchedUserId), { insignia: 10 });
+  alert('Insignia 10 concedida!');
+});
+document.getElementById('admin-create-event-btn').addEventListener('click', async () => {
+  const title = document.getElementById('event-title-input').value.trim();
+  const desc = document.getElementById('event-desc-input').value.trim();
+  if(!title) return;
+  await setDoc(doc(collection(db, 'events')), { title, description: desc, createdAt: Date.now() });
+  alert('Evento criado com sucesso!');
 });
 </script>
 </body>
 </html>
+
